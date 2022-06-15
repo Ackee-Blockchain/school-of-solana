@@ -2,7 +2,7 @@
 
 # SSoS - 1. Lecture
 
-To avoid losing time on our first lecture, I would like to ask you to **prepare/install some stuff**.
+In order not to waste time on our first lecture, please **prepare/install some stuff** in advance. 👇
 
 </div>
 
@@ -18,7 +18,7 @@ To avoid losing time on our first lecture, I would like to ask you to **prepare/
 
 # 👨‍💻 Solana Handbook
 
-- 30 pages introduction to Solana by Ackee Blockchain
+- 30 pages of introduction to Solana by Ackee Blockchain
 - Created for Summer School of Solana 💜
 
 Get it here 👉 👉 👉
