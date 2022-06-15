@@ -1,0 +1,15 @@
+[package]
+name = "counter"
+version = "0.1.0"
+edition = "2018"
+
+[features]
+no-entrypoint = []
+
+[dependencies]
+solana-program = "1.8.2"
+borsh = "0.9.1"
+borsh-derive = "0.9.1"
+
+[lib]
+crate-type = ["cdylib", "lib"]
