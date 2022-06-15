@@ -52,7 +52,7 @@ npm run build:program-rust
 ### Deploy the on-chain program
 
 ```bash
-solana program deploy dist/program/helloworld.so
+solana program deploy dist/program/counter.so
 ```
 
 ### Run the JavaScript client
