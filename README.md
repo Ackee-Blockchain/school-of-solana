@@ -10,7 +10,7 @@ developed by [Ackee Blockchain](https://ackeeblockchain.com)
 
 </div>
 
-👀 What can I expect during the course?
+📝 What can I expect during the course?
 
 Overview of lessons with dates:
   1. [Introduction to Solana](https://github.com/Ackee-Blockchain/summer-school-of-solana-2022/tree/master/1.lesson) – Jun 15th
