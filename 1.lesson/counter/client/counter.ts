@@ -209,7 +209,7 @@ import {
     * Decrement
     */
    export async function decrement(): Promise<void> {
-    console.log('Incrementing ', counter.publicKey.toBase58());
+    console.log('Decrementing ', counter.publicKey.toBase58());
     const instruction = new TransactionInstruction({
         keys: [{pubkey: counter.publicKey, isSigner: false, isWritable: true}],
         programId,
