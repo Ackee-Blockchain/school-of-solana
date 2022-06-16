@@ -52,7 +52,7 @@ import {
 
   /**
    * Path to the keypair of the deployed program.
-   * This file is created when running `solana program deploy dist/program/counter.so`
+   * This file is created when running `solana program deploy dist/program/helloworld.so`
    */
   const PROGRAM_KEYPAIR_PATH = path.join(PROGRAM_PATH, 'counter-keypair.json');
 
@@ -141,7 +141,7 @@ import {
     } catch (err) {
       const errMsg = (err as Error).message;
       throw new Error(
-        `Failed to read program keypair at '${PROGRAM_KEYPAIR_PATH}' due to error: ${errMsg}. Program may need to be deployed with \`solana program deploy dist/program/counter.so\``,
+        `Failed to read program keypair at '${PROGRAM_KEYPAIR_PATH}' due to error: ${errMsg}. Program may need to be deployed with \`solana program deploy dist/program/helloworld.so\``,
       );
     }
 
@@ -150,7 +150,7 @@ import {
     if (programInfo === null) {
       if (fs.existsSync(PROGRAM_SO_PATH)) {
         throw new Error(
-          'Program needs to be deployed with `solana program deploy dist/program/counter.so`',
+          'Program needs to be deployed with `solana program deploy dist/program/helloworld.so`',
         );
       } else {
         throw new Error('Program needs to be built and deployed');
