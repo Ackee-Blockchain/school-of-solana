@@ -99,25 +99,29 @@ import {
   export async function establishPayer(): Promise<void> {
     let fees = 0;
     if (!payer) {
-      const {feeCalculator} = await connection.getRecentBlockhash();
-
       // Calculate the cost to fund the greeter account
       fees += await connection.getMinimumBalanceForRentExemption(COUNTER_SIZE);
 
       // Calculate the cost of sending transactions
-      fees += feeCalculator.lamportsPerSignature * 100; // wag
+      fees += 5000 * 100; // wag
 
       payer = await getPayer();
     }
 
     let lamports = await connection.getBalance(payer.publicKey);
+
     if (lamports < fees) {
       // If current balance is not enough to pay for fees, request an airdrop
-      const sig = await connection.requestAirdrop(
+      const signature = await connection.requestAirdrop(
         payer.publicKey,
         fees - lamports,
       );
-      await connection.confirmTransaction(sig);
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+      await connection.confirmTransaction({
+        blockhash,
+        lastValidBlockHeight,
+        signature
+      });
       lamports = await connection.getBalance(payer.publicKey);
     }
 

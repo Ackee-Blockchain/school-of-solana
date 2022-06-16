@@ -22,7 +22,12 @@ export async function newKeypairWithLamports(
     keypair.publicKey,
     lamports,
   );
-  await connection.confirmTransaction(signature);
+  const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+  await connection.confirmTransaction({
+    blockhash,
+    lastValidBlockHeight,
+    signature
+  });
   return keypair;
 }
 
