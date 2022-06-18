@@ -40,7 +40,7 @@ import {
   /**
    * Path to program files
    */
-  const PROGRAM_PATH = path.resolve(__dirname, '../dist/program');
+  const PROGRAM_PATH = path.resolve(__dirname, '../program/dist/program');
 
   /**
    * Path to program shared object file which should be deployed on chain.
