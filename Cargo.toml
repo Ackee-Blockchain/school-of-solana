@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "1.lesson/counter/program",
+    "2.lesson/hands-on"
+]

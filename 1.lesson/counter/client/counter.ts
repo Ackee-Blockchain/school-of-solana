@@ -196,7 +196,7 @@ import {
     const instruction = new TransactionInstruction({
       keys: [{pubkey: counter.publicKey, isSigner: false, isWritable: true}],
       programId,
-      data: Buffer.alloc(1),
+      data: Buffer.alloc(1,0),
     });
     await sendAndConfirmTransaction(
       connection,
@@ -213,7 +213,7 @@ import {
     const instruction = new TransactionInstruction({
         keys: [{pubkey: counter.publicKey, isSigner: false, isWritable: true}],
         programId,
-        data: Buffer.alloc(2),
+        data: Buffer.alloc(1,1),
     });
     await sendAndConfirmTransaction(
         connection,

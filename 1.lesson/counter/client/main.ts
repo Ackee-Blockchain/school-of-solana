@@ -8,6 +8,7 @@
     checkProgram,
     increment,
     getValue,
+    decrement,
   } from './counter';
 
   async function main() {
@@ -22,6 +23,8 @@
 
     // Say hello to an account
     await increment();
+
+    await decrement();
 
     // Find out the value of counter
     await getValue();
