@@ -12,7 +12,7 @@ impl Person{
     }
 }
 
-pub fn follow() {
+pub fn main() {
     let person: Person = Person::new_person("John", "Doe");
 
     println!("Person: {} {}", person.first_name, person.last_name);
