@@ -1,5 +1,6 @@
 [workspace]
 members = [
     "1.lesson/counter/program",
-    "2.lesson/hands-on"
+    "2.lesson/hands-on",
+    "3.lesson/program",
 ]

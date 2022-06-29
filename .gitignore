@@ -1,3 +1,6 @@
 .DS_Store
 dist/
 target/
+test-ledger/
+node_modules/
+build/
