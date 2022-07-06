@@ -1,5 +1,7 @@
 import {
     Connection,
+    PublicKey,
+    SystemProgram,
     Transaction,
     TransactionInstruction,
 } from "@solana/web3.js";
@@ -13,7 +15,9 @@ const coin = async () => {
     const connection = new Connection("http://localhost:8899", "confirmed");
     const turnstileProgramId = getProgramId();
     const state = getKeypair("state");
-    const payer = getKeypair("initializer");
+    const initializer = getKeypair("initializer");
+    const user = getKeypair("user");
+    const [treasury, _bump] = await PublicKey.findProgramAddress([initializer.publicKey.toBuffer()], turnstileProgramId);
 
     const coinStateIx = new TransactionInstruction({
         programId: turnstileProgramId,
@@ -24,9 +28,19 @@ const coin = async () => {
                 isWritable: true,
             },
             {
-                pubkey: payer.publicKey, 
+                pubkey: treasury, 
+                isSigner: false,
+                isWritable: true,
+            },
+            {
+                pubkey: user.publicKey, 
                 isSigner: true,
                 isWritable: true,
+            },
+            {
+                pubkey: SystemProgram.programId, 
+                isSigner: false,
+                isWritable: false,
             },
         ],
         data: Buffer.from(
@@ -41,7 +55,7 @@ const coin = async () => {
     console.log("Sending coin transaction.");
     await connection.sendTransaction(
         tx,
-        [payer],
+        [user],
         { skipPreflight: false, preflightCommitment: "confirmed" }
     );
 

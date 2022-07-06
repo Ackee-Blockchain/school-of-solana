@@ -1,5 +1,6 @@
 import {
     Connection,
+    PublicKey,
     SystemProgram,
     Transaction,
     TransactionInstruction,
@@ -15,6 +16,7 @@ const init = async () => {
     const turnstileProgramId = getProgramId();
     const initializer = getKeypair("initializer");
     const state = getKeypair("state");
+    const [treasury, _bump] = await PublicKey.findProgramAddress([initializer.publicKey.toBuffer()], turnstileProgramId);
 
     const initStateIx = new TransactionInstruction({
         programId: turnstileProgramId,
@@ -27,6 +29,11 @@ const init = async () => {
             {
                 pubkey: initializer.publicKey, 
                 isSigner: true,
+                isWritable: true,
+            },
+            {
+                pubkey: treasury, 
+                isSigner: false,
                 isWritable: true,
             },
             {
@@ -50,6 +57,7 @@ const init = async () => {
         [initializer, state],
         { skipPreflight: false, preflightCommitment: "confirmed" }
     );
+    console.log("Treasury address: ", treasury.toBase58().toString());
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 }

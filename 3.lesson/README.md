@@ -21,9 +21,10 @@ Deploy Solana program (must be already built)
 ```
 solana program deploy ../program/target/deploy/turnstile.so --program-id keys/program.json
 ```
-Airdrop SOLs to initializer 
+Airdrop SOLs to initializer and user
 ```
 solana airdrop 10 keys/initializer.json
+solana airdrop 10 keys/user.json
 ```
 Run `init` instruction
 ```

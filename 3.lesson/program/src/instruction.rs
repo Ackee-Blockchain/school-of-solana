@@ -15,7 +15,8 @@ pub enum TurnstileInstruction {
     ///
     /// (1) [signer, writable] State Account
     /// (2) [signer, writable] Initializer
-    /// (3) [] System Program
+    /// (3) [writable] Treasury wallet (PDA)
+    /// (4) [] System Program
     Initialze { init_state: bool },
     /// Push
     ///
@@ -28,6 +29,9 @@ pub enum TurnstileInstruction {
     /// Passed accounts:
     ///
     /// (1) [writable] State Account
+    /// (2) [writable] Treasury wallet (PDA)
+    /// (3) [signer, writable] Users wallet
+    /// (4) [] System Program
     Coin,
 }
 
@@ -37,11 +41,13 @@ pub fn initialize(
     initializer: Pubkey,
     init_state: bool,
 ) -> Instruction {
+    let (treasury, _) = Pubkey::find_program_address(&[initializer.as_ref()], &turnstile_program);
     Instruction {
         program_id: turnstile_program,
         accounts: vec![
             AccountMeta::new(state, true),
             AccountMeta::new(initializer, true),
+            AccountMeta::new(treasury, true),
             AccountMeta::new_readonly(system_program::id(), false),
         ],
         data: TurnstileInstruction::Initialze { init_state }
@@ -50,10 +56,14 @@ pub fn initialize(
     }
 }
 
-pub fn coin(turnstile_program: Pubkey, state: Pubkey) -> Instruction {
+pub fn coin(turnstile_program: Pubkey, state: Pubkey, initializer: Pubkey) -> Instruction {
+    let (treasury, _) = Pubkey::find_program_address(&[initializer.as_ref()], &turnstile_program);
     Instruction {
         program_id: turnstile_program,
-        accounts: vec![AccountMeta::new(state, false)],
+        accounts: vec![
+            AccountMeta::new(state, false),
+            AccountMeta::new(treasury, false),
+        ],
         data: TurnstileInstruction::Coin.try_to_vec().unwrap(), //[2]
     }
 }
