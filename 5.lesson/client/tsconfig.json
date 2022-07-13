@@ -1,0 +1,11 @@
+
+{
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./build",
+        "lib": ["ESNext"],
+        "strict": true,
+        "skipLibCheck": true
+    }
+}
+  
