@@ -39,6 +39,7 @@ pub fn initialize(
     let initialezer_account_info = next_account_info(account_into_iter)?;
     let treasury_account_info = next_account_info(account_into_iter)?;
 
+    //swap treasury account
     let (treasury, bump) =
         Pubkey::find_program_address(&[state_account_info.key.as_ref()], program_id);
 
@@ -81,13 +82,22 @@ pub fn initialize(
     Ok(())
 }
 
-pub fn coin(_program_id: &Pubkey, accounts: &[AccountInfo]) -> ProgramResult {
+pub fn coin(program_id: &Pubkey, accounts: &[AccountInfo]) -> ProgramResult {
     let account_into_iter = &mut accounts.iter();
     let state_account_info = next_account_info(account_into_iter)?;
     let treasury_account_info = next_account_info(account_into_iter)?;
     let user_account_info = next_account_info(account_into_iter)?;
 
     assert_eq!(user_account_info.is_signer, true);
+
+    //check treasury account
+    let (treasury, _bump) =
+        Pubkey::find_program_address(&[state_account_info.key.as_ref()], program_id);
+
+    let state = State::try_from_slice(&state_account_info.data.borrow())?;
+
+    assert_eq!(state.locked, false);
+    assert_eq!(treasury, *treasury_account_info.key);
 
     invoke(
         &system_instruction::transfer(
@@ -112,7 +122,7 @@ pub fn push(_program_id: &Pubkey, accounts: &[AccountInfo]) -> ProgramResult {
     let state_account_info = next_account_info(account_into_iter)?;
     let user_account_info = next_account_info(account_into_iter)?;
 
-    let state: State = try_from_slice_unchecked(&state_account_info.data.borrow())?;
+    let state = State::try_from_slice(&state_account_info.data.borrow())?;
 
     assert_eq!(user_account_info.is_signer, true);
     assert_eq!(state.payer, *user_account_info.key);
