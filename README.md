@@ -20,8 +20,8 @@ Overview of lessons with dates:
 4. Solana programming model II – Jul 6th
 5. Solana programming model III – Jul 13th
 6. Anchor Framework + task – Jul 20th
-7. Security – Jul 27th
-8. NFTs on Solana – Aug 3rd
+7. NFTs on Solana – Jul 27th
+8. Security – Aug 3rd
 9. Task Feedback & Summary – Aug 10th
 
 📆 When & how to connect:
