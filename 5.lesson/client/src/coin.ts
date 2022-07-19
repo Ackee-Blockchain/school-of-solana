@@ -17,7 +17,7 @@ const coin = async () => {
     const state = getKeypair("state");
     const initializer = getKeypair("initializer");
     const user = getKeypair("user");
-    const [treasury, _bump] = await PublicKey.findProgramAddress([initializer.publicKey.toBuffer()], turnstileProgramId);
+    const [treasury, _bump] = await PublicKey.findProgramAddress([state.publicKey.toBuffer()], turnstileProgramId);
 
     const coinStateIx = new TransactionInstruction({
         programId: turnstileProgramId,

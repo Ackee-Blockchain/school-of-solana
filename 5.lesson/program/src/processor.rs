@@ -96,7 +96,7 @@ pub fn coin(program_id: &Pubkey, accounts: &[AccountInfo]) -> ProgramResult {
 
     let state = State::try_from_slice(&state_account_info.data.borrow())?;
 
-    assert_eq!(state.locked, false);
+    assert_eq!(state.locked, true);
     assert_eq!(treasury, *treasury_account_info.key);
 
     invoke(
