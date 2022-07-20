@@ -62,4 +62,7 @@ const init = async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 }
 
-init();
+init().catch((error) => {
+    console.log(error);
+    process.exit(1);
+});

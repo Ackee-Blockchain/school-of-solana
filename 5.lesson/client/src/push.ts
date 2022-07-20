@@ -49,4 +49,7 @@ const push = async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 }
 
-push();
+push().catch((error) => {
+    console.log(error);
+    process.exit(1);
+});
