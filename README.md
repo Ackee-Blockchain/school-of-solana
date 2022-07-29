@@ -16,10 +16,10 @@ Overview of lessons with dates:
 
 1. [Introduction to Solana](https://github.com/Ackee-Blockchain/summer-school-of-solana-2022/tree/master/1.lesson) – Jun 15th
 2. [Rust for Solana](https://github.com/Ackee-Blockchain/summer-school-of-solana-2022/tree/master/2.lesson) – Jun 22nd
-3. [Solana programming model I](https://github.com/Ackee-Blockchain/summer-school-of-solana-2022/tree/master/3.lesson) – Jun 29th
-4. Solana programming model II – Jul 6th
-5. Solana programming model III – Jul 13th
-6. Anchor Framework + task – Jul 20th
+3. [Solana programming model I](https://github.com/Ackee-Blockchain/summer-school-of-solana-2022/tree/master/3-4.lesson) – Jun 29th
+4. [Solana programming model II](https://github.com/Ackee-Blockchain/summer-school-of-solana-2022/tree/master/3-4.lesson) – Jul 6th
+5. [Solana programming model III](https://github.com/Ackee-Blockchain/summer-school-of-solana-2022/tree/master/5.lesson) – Jul 13th
+6. [Anchor Framework + task](https://github.com/Ackee-Blockchain/summer-school-of-solana-2022/tree/master/6.lesson) – Jul 20th
 7. NFTs on Solana – Jul 27th
 8. Security – Aug 3rd
 9. Task Feedback & Summary – Aug 10th
