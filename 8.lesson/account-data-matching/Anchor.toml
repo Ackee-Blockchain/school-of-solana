@@ -1,0 +1,15 @@
+[features]
+seeds = false
+[programs.localnet]
+account_data_matching_insecure = "Poo5jhFcGjMjYaz2cpmSNVq4ehvjKJhjU7aCZiS2LMP"
+account_data_matching_secure = "Po8QNbexAedzyagU3ZupR7pLeaqe4BmJmrNCaJ8xu6h"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "localnet"
+wallet = "/home/marcinv/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
