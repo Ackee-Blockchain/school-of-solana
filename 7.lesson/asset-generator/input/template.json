@@ -1,0 +1,36 @@
+{
+    "name": "Summer School NFT",
+    "symbol": "SSOS",
+    "description": "Cutest guys on Solana Network!!",
+    "seller_fee_basis_points": 500,
+    "image": "image.png",
+    "external_url": "https://ackeeblockchain.com/school-of-solana",
+    "attributes": 
+    [
+    ],
+    "collection":
+    {
+        "name": "Summer School NFT",
+        "family": "Summer School NFT"
+    },
+    "properties":
+    {
+        "files":
+        [
+            {
+                "uri": "image.png",
+                "type": "image/png"
+            }
+        ],
+        "category": "image",
+        "creators":
+        [
+            {
+                "address": "2H8hEj9cNQ92DzPDLDfebf9SofLhbRqr4DnXc4M9Ro9w",
+                "share": 100
+            }
+        ]
+    }
+}
+
+
