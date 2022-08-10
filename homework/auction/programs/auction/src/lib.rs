@@ -143,9 +143,9 @@ pub struct EndAuction<'info> {
     /// CHECK:
     pub highest_bidder: AccountInfo<'info>,
     #[account(
-        mut, 
-        seeds = [state.to_account_info().key.as_ref(), highest_bidder.to_account_info().key.as_ref()], 
-        bump = winners_bid.bump, 
+        mut,
+        seeds = [state.to_account_info().key.as_ref(), highest_bidder.to_account_info().key.as_ref()],
+        bump = winners_bid.bump,
         close = highest_bidder
     )]
     pub winners_bid: Account<'info, BidInfo>,
@@ -156,9 +156,9 @@ pub struct Refund<'info> {
     #[account(has_one = treasury, constraint = state.ended == true)]
     pub state: Account<'info, State>,
     #[account(
-        mut, 
-        seeds = [state.to_account_info().key.as_ref(), bidder.to_account_info().key.as_ref()], 
-        bump = bid_account.bump, 
+        mut,
+        seeds = [state.to_account_info().key.as_ref(), bidder.to_account_info().key.as_ref()],
+        bump = bid_account.bump,
         close = bidder)]
     pub bid_account: Account<'info, BidInfo>,
     #[account(mut)]
