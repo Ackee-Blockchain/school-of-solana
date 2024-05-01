@@ -51,7 +51,7 @@ enroll in our **_School of Solana_** and get certified with **_Ackee Blockchain_
 
 # 👩‍💻 What to prepare:
 - Git
-- Your favorite IDE (VS Code, IntelliJ, Vim, Sublime, …)
+- Your favorite IDE (VS Code, IntelliJ, Vim, Sublime (...) Note: the terminal used in the lectures is Warp (warp.dev))
 - The desire to learn new things
 
 -----
