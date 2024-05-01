@@ -5,18 +5,26 @@
 <div align="center">
 
 <a href="https://discord.gg/z3JVuZyFnp">
-  <img src="https://discordapp.com/api/guilds/867746290678104064/widget.png?style=banner2" width="250" title="AckeeBlockchain/Trdelnik discord">
+  <img src="https://discordapp.com/api/guilds/867746290678104064/widget.png?style=banner2" width="250" title="AckeeBlockchain/Discord">
 </a>
 
-developed by [Ackee Blockchain](https://ackeeblockchain.com)
+Developed by [Ackee Blockchain](https://ackeeblockchain.com)
+</div>
 
 -----
 
-
+<div align="left">
+  
 # 💜 What's this all about?
-Do you want to learn **_Rust_** and be able to code, debug, and review **_Solana_** programs?
-If you are interested in blockchain & crypto and already have previous knowledge in any programming language,
-enroll in our **_School of Solana_** and get certified with **_Ackee Blockchain_**.
+Do you want to learn Rust and be able to code, debug, and review Solana programs? If you are interested in blockchain & crypto and already have previous knowledge in any programming language, enroll in the School of Solana and get certified by Ackee Blockchain. [Sign up](https://ackee.xyz/school-of-solana).
+
+School of Solana Season 5:
+- 100% free
+- 9 weeks, online & in English
+- Start date: April 10, 2024
+- Application deadline: April 7, 2024
+- Graduation: Around the end of June
+
 
 
 
