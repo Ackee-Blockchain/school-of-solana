@@ -43,9 +43,7 @@ enroll in our **_School of Solana_** and get certified with **_Ackee Blockchain_
 -----
 
 # 📚 Our learning material:
-- We created the **_Solana Handbook_** to provide study material for School of Solana students. It should serve as an entry point for new Solana developers or blockchain enthusiasts wishing to learn about Solana.
-
-  ### Read the [Solana Handbook](https://ackeeblockchain.com/solana-handbook.pdf)
+- We created the [Solana Handbook](https://ackeeblockchain.com/solana-handbook.pdf) to provide study material for School of Solana devs. It should serve as an entry point for new Solana developers or blockchain enthusiasts wishing to learn about Solana. Read the [Solana Handbook](https://ackeeblockchain.com/solana-handbook.pdf).
 
 -----
 
@@ -57,17 +55,16 @@ enroll in our **_School of Solana_** and get certified with **_Ackee Blockchain_
 -----
 
 # 🔬 How to participate:
-- You can **participate** here:
-  ### [School of Solana](https://ackeeblockchain.com/school-of-solana)
+- You can **participate** by sending an application: [School of Solana](https://ackee.xyz/school-of-solana)
 
 -----
 
 # 🎓 Rules for getting a certification:
 As validation of your acquired skills in the Rust language and Solana blockchain, you will receive our Ackee Blockchain certificate, which will serve as future proof of your fundamental knowledge.
 
-## Before you rule the world of blockchain and smart contracts, keep in mind the following rules:
-- Maximum absence: 2 Tasks
-- Output: Development of a well documented functional Solana program.
+Before you rule the world of blockchain and smart contracts, keep in mind the following rules:
+- Miss no more than 2 assignments
+- Output: Development of a functional Solana program
 
 -----
 
