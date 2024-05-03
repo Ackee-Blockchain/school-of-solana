@@ -4,3 +4,6 @@
 [submodule "5.lesson/debugging-example"]
 	path = 5.lesson/debugging-example
 	url = https://github.com/Ackee-Blockchain/sos-debugging-lecture
+[submodule "Bonus-Trident/Trident"]
+	path = Bonus-Trident/Trident
+	url = https://github.com/Ackee-Blockchain/trident
