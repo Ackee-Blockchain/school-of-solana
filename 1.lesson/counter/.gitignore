@@ -1,8 +1,0 @@
-node_modules
-test-ledger/
-program/dist
-program/target
-dist/
-target/
-test-ledger/
-.DS_Store
