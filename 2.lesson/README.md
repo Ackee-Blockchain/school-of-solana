@@ -1,4 +1,4 @@
-# SSoS - 2. Lecture
+# School of Solana - 1. Lecture
 
 Learning resources:
 
@@ -6,7 +6,7 @@ Learning resources:
 - [Exercism](https://exercism.org/tracks/rust)
 - [Cheat](https://cheats.rs/#memory-lifetimes)
 
-## **Rust**
+## Rust
 
 Rust is a modern systems programming language focusing on safety, speed, and concurrency. It accomplishes these goals by being memory safe without using garbage collection.
 
@@ -16,13 +16,13 @@ means that these types are designed to make it harder to write incorrect program
 
 The big difference from C and C++ is that Rust is *safe by default.* All memory accesses are checked. It is not possible to corrupt memory by accident.
 
-## **Rust - Data Types**
+## Rust - Data Types
 
 Rust is a statically typed language. Every value in Rust is of a certain data type. The compiler can automatically infer data type of the variable based on the value assigned to it.
 
 Use the **_let_** keyword to declare a variable.
 
-## **Rust - Variables**
+## Rust - Variables
 
 The data type is optional while declaring a variable in Rust. The data type is inferred from the value assigned to the variable.
 
@@ -34,7 +34,7 @@ Variables are immutable by default. Prefix the variable name with **mut** keyw
 
 Rust allows programmers to declare variables with the same name. In such a case, the new variable overrides the previous variable.
 
-## **Rust - Structure**
+## Rust - Structure
 
 Arrays are used to represent a homogeneous collection of values. Similarly, a structure is another user defined data type available in Rust that allows us to combine data items of different types, including another structure. A structure defines data as a key-value pair.
 
@@ -55,7 +55,7 @@ fn main() {
 }
 ```
 
-## **Ownership**
+## Ownership
 
 Ownership is Rust’s most unique feature and has deep implications for the rest of the language.
 
@@ -66,7 +66,7 @@ _Ownership_
 
 Rust uses a third approach: memory is managed through a system of ownership with a set of rules that the compiler checks. If any of the rules are violated, the program won’t compile. None of the features of ownership will slow down your program while it’s running.
 
-### [Ownership Rules](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#ownership-rules)
+[Ownership Rules](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#ownership-rules)
 
 First, let’s take a look at the ownership rules. Keep these rules in mind as we work through the examples that illustrate them:
 
@@ -74,7 +74,7 @@ First, let’s take a look at the ownership rules. Keep these rules in mind as w
 - There can only be one owner at a time.
 - When the owner goes out of scope, the value will be dropped.
 
-## **What is Borrowing?**
+## What is Borrowing?
 
 When a function transfers its control over a variable/value to another function temporarily, for a while, it is called borrowing. This is achieved by passing a reference to the variable **_(& var_name)_** rather than passing the variable/value itself to the function. The ownership of the variable/ value is transferred to the original owner of the variable after the function to which the control was passed completes execution.
 

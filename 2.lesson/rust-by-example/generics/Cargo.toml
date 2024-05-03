@@ -1,5 +1,5 @@
 [package]
-name = "hand-on"
+name = "generics"
 version = "0.1.0"
 edition = "2021"
 
