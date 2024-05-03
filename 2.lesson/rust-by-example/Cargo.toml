@@ -1,3 +1,14 @@
 [workspace]
-members = [ "expressions", "functions", "generics","hello-world", "macros", "options", "primitives", "results", "traits", "variable-bindings"]
+members = [
+    "expressions",
+    "functions",
+    "generics",
+    "hello-world",
+    "macros",
+    "options",
+    "primitives",
+    "results",
+    "traits",
+    "variable-bindings",
+]
 resolver = "2"
