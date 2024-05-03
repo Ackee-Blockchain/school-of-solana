@@ -1,4 +1,4 @@
-# School of Solana - 1. Lecture
+# School of Solana - 2. Lecture
 
 Learning resources:
 
