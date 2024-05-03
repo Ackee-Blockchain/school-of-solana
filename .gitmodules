@@ -1,0 +1,3 @@
+[submodule "Solana-Handbook"]
+	path = Solana-Handbook
+	url = https://github.com/Ackee-Blockchain/solana-handbook
