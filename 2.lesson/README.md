@@ -1,4 +1,4 @@
-# School of Solana - 2. Lecture
+# 2. Lecture - Introduction to Rust
 
 Learning resources:
 
