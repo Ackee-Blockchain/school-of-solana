@@ -1,5 +1,5 @@
 
-# School of Solana - 1. Lecture
+# 1. Lecture - Introduction to Solana and Blockchain
 
 In order not to waste time on our first lecture, please **prepare/install some stuff** in advance. 👇
 

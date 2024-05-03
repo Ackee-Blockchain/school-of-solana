@@ -1,3 +1,5 @@
+# 5. Lecture - Best development practices and debugging
+
 # Build Solana program
 ```
 cd program
