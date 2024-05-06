@@ -1,4 +1,4 @@
-# 3. Lecture and 4. Lecture - Solana programming model I and II
+# 3. Lecture - Solana programming model I
 
 
 # Build Solana program
