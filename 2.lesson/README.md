@@ -1,7 +1,26 @@
 # 2. Lecture - Introduction to Rust
 
-Learning resources:
 
+## Table of Contents
+- [Learning resources](#learning-resources)
+- [Rust](#rust)
+- [Rust Data Types](#rust-data-types)
+- [Rust Variables](#rust-variables)
+- [Mutable](#mutable)
+- [Shadowing](#shadowing)
+- [Rust-Structure](#rust-structure)
+- [Ownership](#ownership)
+- [What is Borrowing?](#what-is-borrowing)
+    - [The Rules of References](#the-rules-of-references)
+    - [In what order it will be dropped?](#in-what-order-it-will-be-dropped)
+- [The Slice Type](#the-slice-type)
+- [Rust-Traits](#rust-traits)
+- [Rust-Enums](#rust-enums)
+- [Rust-Option<T>](#rust-optiont)
+- [Rust-Result](#rust-result)
+- [What is a macro?](#what-is-a-macro)
+
+## Learning resources:
 - [Rust book](https://doc.rust-lang.org/book/)
 - [Exercism](https://exercism.org/tracks/rust)
 - [Cheat](https://cheats.rs/#memory-lifetimes)
@@ -16,13 +35,13 @@ means that these types are designed to make it harder to write incorrect program
 
 The big difference from C and C++ is that Rust is *safe by default.* All memory accesses are checked. It is not possible to corrupt memory by accident.
 
-## Rust - Data Types
+## Rust Data Types
 
 Rust is a statically typed language. Every value in Rust is of a certain data type. The compiler can automatically infer data type of the variable based on the value assigned to it.
 
 Use the **_let_** keyword to declare a variable.
 
-## Rust - Variables
+## Rust Variables
 
 The data type is optional while declaring a variable in Rust. The data type is inferred from the value assigned to the variable.
 
@@ -34,7 +53,7 @@ Variables are immutable by default. Prefix the variable name with **mut** keyw
 
 Rust allows programmers to declare variables with the same name. In such a case, the new variable overrides the previous variable.
 
-## Rust - Structure
+## Rust Structure
 
 Arrays are used to represent a homogeneous collection of values. Similarly, a structure is another user defined data type available in Rust that allows us to combine data items of different types, including another structure. A structure defines data as a key-value pair.
 
@@ -83,7 +102,7 @@ When a function transfers its control over a variable/value to another function 
 - At any given time, you can have *either* one mutable reference *or* any number of immutable references.
 - References must always be valid.
 
-### In what order it will be droped?
+### In what order it will be dropped?
 
 ```rust
 type Id = u32;
@@ -132,7 +151,7 @@ fn main() {
 }
 ```
 
-## Rust - Traits
+## Rust Traits
 
 Please note that Rust does not spell `struct` *class*. The keyword `class` in other languages is so overloaded with meaning that it effectively shuts down original thinking.
 
@@ -167,7 +186,7 @@ fn main() {
 }
 ```
 
-## Rust - Enums
+## Rust Enums
 
 Enums are types which have a few definite values. For instance, a direction has only four possible values.
 
@@ -197,7 +216,7 @@ fn main(){
 }
 ```
 
-## Rust - Option<T>
+## Rust Option\<T\>
 
 The `Option<T>` enum has two variants:
 
@@ -221,7 +240,7 @@ fn main() {
 }
 ```
 
-## Rust - Result
+## Rust Result
 
 The return is annotated with the Result enum. We specify the types that the Result will contain when the function returns. If the string is long enough, we return a string literal. If there is an error, we will return a message that is a String. This explains the **`Result<&str, String>`**
 .
@@ -248,3 +267,10 @@ fn main() {
 ## What is a macro?
 
 Rust provides a powerful macro system that allows meta-programming. As you have seen in the previous example, macros look like functions, except that their name ends with a bang(!), but instead of generating a function call, macros are expanded into source code that gets compiled with the rest of the program. Therefore, they provide more runtime features to a program unlike functions. Macros are an extended version of functions.
+
+-----
+
+
+
+### Need help?
+If you have any questions feel free to reach out to us at [Discord](https://discord.gg/z3JVuZyFnp).
