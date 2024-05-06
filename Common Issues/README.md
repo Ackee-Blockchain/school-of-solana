@@ -1,10 +1,11 @@
 # Common Issues
 - [Insufficient Funds](#insufficient-funds)
 - [Rustc version Mismatch](#rustc-versions-mismatch)
+- [Program ID Mismatch](#program-id-mismatch)
 - [How to Contribute](#how-to-contribute)
 
 
-## Insufficient Funds
+# Insufficient Funds
 ### Description
 Running the Tests manually, i.e. starting `solana-test-validator` and using `anchor-deploy` and `anchor test --skip-local-validator` can result in:
 ```text
@@ -16,7 +17,8 @@ This means that the program deployer does not have enough funds to deploy the pr
 - use only `anchor test` - without manually starting the validator by yourself
 - use `solana airdrop 500 <DEPLOYER_ADDRESS>` - this will require to have the config setup for the Localhost, and you need to know the deployer address. You can find the path to the deplyer wallet in the Anchor.toml file
 
-## Rustc Versions mismatch
+
+# Rustc Versions mismatch
 ### Description
 During the various commands, but mostly during the `anchor build` you may encounter `rustc` version mismatch as shown in the example below. Even thought the command `rustup default` show that you have sufficient version installed, the error still persists.
 ```text
@@ -28,7 +30,17 @@ error: package `solana-program v1.18.12` cannot be built because it requires rus
 solana-install init 1.18.12
 ```
 
+# Program ID Mismatch
+### Description
+You may experience behavior when you run your tests and you are getting an error with the error code as follows:
+>AnchorError occurred. Error Code: DeclaredProgramIdMismatch. Error Number: 4100. Error Message: The declared program id does not match the actual program id. This is because the program id declared in the source code, the program ID within the Anchor.toml and the program id expected by Anchor do not match.
 
+### How to Fix
+In order to fix this, run:
+```bash
+anchor keys list
+```
+Which will output the correct program ID. Make sure that this program ID is included in the `Anchor.toml` and also in `declare_id!` macro. In the case of multiple programs, the command will output multiple program IDs, then the process is the same.
 
 ---
 
