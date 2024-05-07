@@ -302,8 +302,6 @@ mod hello_anchor {
     }
 }
 
-
-
 // Defines custom errors.
 #[error_code]
 pub enum MyError {
@@ -329,11 +327,10 @@ mod hello_anchor {
     }
 }
 
-
-
-
+// Defines custom errors
 #[error_code]
 pub enum MyError {
+    // Error when data exceeds the allowed maximum value.
     #[msg("MyAccount may only hold data below 100")]
     DataTooLarge
 }
@@ -341,3 +338,9 @@ pub enum MyError {
 
 
 There are a couple of `require!` macros to choose from ([search for require in the docs](https://docs.rs/anchor-lang/latest/anchor_lang/?search=require)). When comparing public keys, it's important to use the keys variants of the require statements like `require_keys_eq` instead of `require_eq` because comparing public keys with `require_eq` is very expensive.
+
+
+-----
+
+### Need help?
+If you have any questions feel free to reach out to us at [Discord](https://discord.gg/z3JVuZyFnp).
