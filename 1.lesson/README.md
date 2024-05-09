@@ -12,18 +12,25 @@ In order not to waste time on our first lecture, please **prepare/install some s
 
 
 ## Dev Setup
-- [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
-    > Strongly recommended to use WSL on Windows devices!
-- [Rust](https://www.rust-lang.org/tools/install)
-    > stable version
-- [Solana tool suite](https://docs.solana.com/cli/install-solana-cli-tools)
-    > v1.18.11
-- [Anchor](https://book.anchor-lang.com/getting_started/installation.html)
-    > 0.29.0
-- [VSCode](https://code.visualstudio.com/)
-    > optional. Chose your own preferred IDE
-- [RustAnalyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
-    > optional extension for VSCode
+[WSL]: https://learn.microsoft.com/en-us/windows/wsl/install
+[Rust]: https://www.rust-lang.org/tools/install
+[Solana]: https://docs.solana.com/cli/install-solana-cli-tools
+[Anchor]: https://www.anchor-lang.com/docs/installation
+[VSCode]: https://code.visualstudio.com/
+[RustAnalyzer]: https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
+[Docker Image]: https://ackee.xyz/
+
+
+| Setup                                      | Description                     | Version               | How to Install                |
+| -------------------------------------------| --------------------------------| ----------------------| ------------------------------|
+| Windows subsystem for Linux(WSL)           | optional but highly recommended | 2.0                   | [Instructions][WSL]           |
+| Rust                                       | -                               | stable                | [Instructions][Rust]          |
+| Solana tool suite                          | -                               | 1.18.11               | [Instructions][Solana]        |
+| Anchor framework                           | -                               | 0.29.0                | [Instructions][Anchor]        |
+| VSCode                                     | chose your own preferred IDE    | -                     | [Instructions][VSCode]        |
+| RustAnalyzer                               | optional extension for VSCode   | -                     | [Instructions][RustAnalyzer]  |
+| Docker                                     | comming soon                    | -                     | [Instructions][Docker Image]  |
+
 
 ## Solana Handbook
 
