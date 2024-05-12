@@ -15,7 +15,7 @@ Developed by [Ackee Blockchain](https://ackeeblockchain.com)
 
 <div align="left">
 
-# 💜 What's this all about?
+# 💜 Learning Hub
 Do you want to learn Rust and be able to code, debug, and review Solana programs? If you are interested in blockchain & crypto and already have previous knowledge in any programming language, enroll in the School of Solana and get certified by Ackee Blockchain. [Sign up](https://ackee.xyz/school-of-solana).
 
 School of Solana Season 5:
