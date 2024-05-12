@@ -14,7 +14,7 @@ Developed by [Ackee Blockchain](https://ackeeblockchain.com)
 -----
 
 <div align="left">
-  
+
 # 💜 What's this all about?
 Do you want to learn Rust and be able to code, debug, and review Solana programs? If you are interested in blockchain & crypto and already have previous knowledge in any programming language, enroll in the School of Solana and get certified by Ackee Blockchain. [Sign up](https://ackee.xyz/school-of-solana).
 
@@ -39,7 +39,7 @@ School of Solana Season 5:
 |Week 5|🐛 **Best development practices and debugging**| Develop like a pro! In this lecture, we will show you some best development practices and give you tips and tricks to debug your programs so you can get up to speed quickly. |Solana Program|
 |Week 5 Bonus|➕ **Bonus: SPL Tokens**|The tokens are everywhere! In this lecture, we will show how to implement a simple program that deals with arbitrary SPL tokens.|-|
 |Week 6|🌐 **Front-end for Solana Programs**|Make your program alive! In this lecture, we will show how to implement a simple front end for our Bank app using the official Solana scaffold.|-|
-|Week 6 Bonus|🪙 **Bonus: Token-2022**|The tokens are everywhere! In this lecture, we will show how to implement a simple program that deals with arbitrary SPL tokens.|-|
+|Week 6 Bonus|💸 **Bonus: Token-2022**|The tokens are everywhere! In this lecture, we will show how to implement a simple program that deals with arbitrary SPL tokens.|-|
 |Week 7|🛡️ **Security**|Hackers away! This lecture will introduce common vulnerability issues in Solana programs, how they can be exploited and most importantly, how you can avoid them.|Task 5|
 |Week 7 Bonus|🔱 **Bonus: Trident Fuzzing**|The tokens are everywhere! In this lecture, we will show how to implement a simple program that deals with arbitrary SPL tokens.|-|
 |Week 8|/|Final week to work on your Solana Program.|-|
