@@ -1,6 +1,15 @@
 # 7. Lecture - Security
 
 ## Table of Contents
+- [Solana Runtime Policy](#solana-runtime-policy)
+    - [Immutability](#immutability)
+    - [Data](#data)
+    - [Ownership](#ownership)
+    - [Zero Balance](#zero-balance)
+    - [Transaction](#transaction)
+    - [Data Allocation](#data-allocation)
+    - [Balance](#balance)
+    - [Rent](#rent)
 - [Best Security Practices](#best-security-practices)
     - [Signer Authorization](#signer-authorization)
     - [Owner Checks](#owner-checks)
@@ -11,8 +20,60 @@
     - [Arbitrary CPI](#arbitrary-cpi)
     - [Bump Seed Canonicalization](#bump-seed-canonicalization)
     - [Closing Accounts and Revival Attacks](#closing-accounts-and-revival-attacks)
-
 ---
+
+# Solana Runtime Policy
+
+## Immutability
+> Executable accounts are fully immutable.
+> Executable is one-way (false->true) and only the account owner may set it.
+
+## Data
+
+> Only the owner of an account may modify its data.
+
+> Accounts may only be assigned a new owner if their data is zeroed out.
+And only if the account is not executable. And only if the account is writable.
+
+## Ownership
+
+> Only the owner of an account may assign a new owner.
+
+## Zero Balance
+
+> Accounts with zero balance will be deleted at the end of transaction processing.
+
+> Temporary accounts with zero balance may be created during a transaction.
+
+## Transaction
+
+> Total balances on all the accounts are equal before and after the execution of a transaction.
+
+> After the transaction is executed, balances of read-only accounts must be equal to the balances before the transaction.
+
+> All instructions in the transaction are executed atomically. If one fails, all account modifications are discarded.
+
+## Data Allocation
+
+> Only the owner may change account size and data. And if the account is writable. And if the account is not executable.
+
+> Newly allocated account data is always zeroed out.
+
+## Balance
+
+> Only the owner of an account may subtract its lamports.
+
+> Any program account may add lamports to an account.
+
+## Rent
+
+> Rent fees are charged every epoch and are determined by account size.
+
+> Accounts with sufficient balance to cover 2 years of rent are exempt from fees.
+
+
+
+
 
 # Best Security Practices
 
