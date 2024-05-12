@@ -2,6 +2,7 @@
 - [Insufficient Funds](#insufficient-funds)
 - [Rustc version Mismatch](#rustc-versions-mismatch)
 - [Program ID Mismatch](#program-id-mismatch)
+- [WSL working directory](#wsl-working-directory)
 - [How to Contribute](#how-to-contribute)
 
 
@@ -43,6 +44,22 @@ anchor keys list
 Which will output the correct program ID. Make sure that this program ID is included in the `Anchor.toml` and also in `declare_id!` macro. In the case of multiple programs, the command will output multiple program IDs, then the process is the same.
 
 ---
+
+# WSL working directory
+### Description
+
+You installed WSL, and then started using it, but errors occurred. For example, you are not able to start `solana-test-validator`, or you are unable to build an anchor project using `anchor build`, with the error stating that you don't have the desired version. These problems often arise because WSL, by default, starts in the Windows system directory, such as the home or user directory.
+
+### How to Fix
+
+To fix these issues, just create a new directory inside the installed Linux subsystem, for example:
+
+```bash
+mkdir -p /home/solana/school-of-solana
+cd /home/solana/school-of-solana
+```
+
+And perform everything inside this folder.
 
 ## How to Contribute
 Write New Issue in the following format
