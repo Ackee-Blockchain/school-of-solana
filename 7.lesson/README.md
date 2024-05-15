@@ -1,3 +1,3 @@
-# 6. Lecture - Front-end for Solana Programs
+# 7. Lecture - Front-end for Solana Programs
 
 TODO here will be frontend

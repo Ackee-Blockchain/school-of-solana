@@ -1,4 +1,4 @@
-# 7. Lecture - Security
+# 6. Lecture - Security
 
 ## Table of Contents
 - [Solana Runtime Policy](#solana-runtime-policy)
