@@ -1,16 +1,24 @@
 # 4. Lecture - Solana programming model II
 
 ## Table of Contents
+- [4. Lecture - Solana programming model II](#4-lecture---solana-programming-model-ii)
+  - [Table of Contents](#table-of-contents)
 - [Anchor Framework](#anchor-framework)
-    - [Cross-Program Invocations](#the-accounts-struct)
-        - [Setting up basic CPI functionality](#setting-up-basic-cpi-functionality)
-        - [Privilege Extension](#privilege-extension)
-        - [Reloading an Account](#reloading-an-account)
-        - [Returning values from handler functions](#returning-values-from-handler-functions)
-    - [Program Derived Addresses](#program-derived-addresses)
-        - [Creation of a PDA](#creation-of-a-pda)
-        - [Using PDAs](#using-pdas)
-        - [Conclusion](#conclusion)
+  - [Cross-Program Invocations](#cross-program-invocations)
+    - [Setting up basic CPI functionality](#setting-up-basic-cpi-functionality)
+    - [Privilege Extension](#privilege-extension)
+    - [Reloading an Account](#reloading-an-account)
+    - [Returning values from handler functions](#returning-values-from-handler-functions)
+    - [❗❗Note](#note)
+  - [Program Derived Addresses](#program-derived-addresses)
+    - [Creation of a PDA](#creation-of-a-pda)
+    - [Using PDAs](#using-pdas)
+      - [Hashmap-like structures using PDAs](#hashmap-like-structures-using-pdas)
+      - [Building hashmaps with PDAs](#building-hashmaps-with-pdas)
+      - [How to build PDA hashmaps in Anchor](#how-to-build-pda-hashmaps-in-anchor)
+      - [Enforcing uniqueness](#enforcing-uniqueness)
+    - [Conclusion](#conclusion)
+    - [Need help?](#need-help)
 
 ---
 # Anchor Framework
@@ -443,7 +451,7 @@ pub struct CreateUserStats<'info> {
 
 In the account validation struct we use `seeds` together with `init` to create a PDA with the desired seeds. Additionally, we add an empty `bump` constraint to signal to anchor that it should find the canonical bump itself. Then, in the handler, we call `ctx.bumps.user_stats` to get the bump anchor found and save it to the user stats account as an extra property.
 
-f we then want to use the created pda in a different instruction, we can add a new validation struct (This will check that the `user_stats` account is the pda created by running `hash(seeds, user_stats.bump, game_program_id)`):
+If we then want to use the created pda in a different instruction, we can add a new validation struct (This will check that the `user_stats` account is the pda created by running `hash(seeds, user_stats.bump, game_program_id)`):
 
 
 ```rust
