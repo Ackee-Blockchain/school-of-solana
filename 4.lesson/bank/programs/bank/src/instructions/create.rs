@@ -26,7 +26,7 @@ pub struct Create<'info> {
         init, // Initialize account
         payer=user, // Account that pays for initialization
         space=100, // Space required for the account
-        seeds=[BANK_ACCOUNT_SEED.as_ref(), user.key().as_ref()], // Seeds for account address derivation
+        seeds=[BANK_ACCOUNT_SEED.as_bytes(), user.key().as_ref()], // Seeds for account address derivation
         bump // Bump seed
     )]
     pub bank: Account<'info, BankAccount>, // Bank account type
