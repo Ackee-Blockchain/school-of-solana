@@ -2,23 +2,26 @@
 
 
 ## Table of Contents
-- [Learning resources](#learning-resources)
-- [Rust](#rust)
-- [Rust Data Types](#rust-data-types)
-- [Rust Variables](#rust-variables)
-- [Mutable](#mutable)
-- [Shadowing](#shadowing)
-- [Rust-Structure](#rust-structure)
-- [Ownership](#ownership)
-- [What is Borrowing?](#what-is-borrowing)
+- [2. Lecture - Introduction to Rust](#2-lecture---introduction-to-rust)
+  - [Table of Contents](#table-of-contents)
+  - [Learning resources:](#learning-resources)
+  - [Rust](#rust)
+  - [Rust Data Types](#rust-data-types)
+  - [Rust Variables](#rust-variables)
+  - [Mutable](#mutable)
+  - [Shadowing](#shadowing)
+  - [Rust Structure](#rust-structure)
+  - [Ownership](#ownership)
+  - [What is Borrowing?](#what-is-borrowing)
     - [The Rules of References](#the-rules-of-references)
-    - [In what order it will be dropped?](#in-what-order-it-will-be-dropped)
-- [The Slice Type](#the-slice-type)
-- [Rust-Traits](#rust-traits)
-- [Rust-Enums](#rust-enums)
-- [Rust-Option<T>](#rust-optiont)
-- [Rust-Result](#rust-result)
-- [What is a macro?](#what-is-a-macro)
+    - [In what order will it be dropped?](#in-what-order-will-it-be-dropped)
+  - [The Slice Type](#the-slice-type)
+  - [Rust Traits](#rust-traits)
+  - [Rust Enums](#rust-enums)
+  - [Rust Option\<T\>](#rust-optiont)
+  - [Rust Result](#rust-result)
+  - [What is a macro?](#what-is-a-macro)
+    - [Need help?](#need-help)
 
 ## Learning resources:
 - [Rust book](https://doc.rust-lang.org/book/)
@@ -29,9 +32,7 @@
 
 Rust is a modern systems programming language focusing on safety, speed, and concurrency. It accomplishes these goals by being memory safe without using garbage collection.
 
-Rust is a statically and strongly typed systems programming language. *statically*
-means that all types are known at compile-time, *strongly*
-means that these types are designed to make it harder to write incorrect programs.
+Rust is a *statically* and *strongly* typed systems programming language. Statically means that all types are known at compile-time, strongly means that these types are designed to make it harder to write incorrect programs.
 
 The big difference from C and C++ is that Rust is *safe by default.* All memory accesses are checked. It is not possible to corrupt memory by accident.
 
@@ -102,7 +103,7 @@ When a function transfers its control over a variable/value to another function 
 - At any given time, you can have *either* one mutable reference *or* any number of immutable references.
 - References must always be valid.
 
-### In what order it will be dropped?
+### In what order will it be dropped?
 
 ```rust
 type Id = u32;
@@ -188,7 +189,7 @@ fn main() {
 
 ## Rust Enums
 
-Enums are types which have a few definite values. For instance, a direction has only four possible values.
+Enums are types which have a few definite values.
 
 ```rust
 enum CarType {
