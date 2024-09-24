@@ -17,7 +17,7 @@ describe('game', async () => {
   // Test to verify name setting and changing functionality.
   it('Sets and changes name!', async () => {
     // Find the Program Derived Address (PDA) for the userStats account.
-    const [userStatsPDA, _] = await PublicKey.findProgramAddress(
+    const [userStatsPDA, _] = await PublicKey.findProgramAddressSync(
       [
         anchor.utils.bytes.utf8.encode('user-stats'), // Encode the seed for the PDA.
         provider.wallet.publicKey.toBuffer(), // Include the public key of the wallet as part of the seed.
