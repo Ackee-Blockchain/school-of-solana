@@ -58,7 +58,7 @@ Rust allows programmers to declare variables with the same name. In such a case,
 
 Arrays are used to represent a homogeneous collection of values. Similarly, a structure is another user defined data type available in Rust that allows us to combine data items of different types, including another structure. A structure defines data as a key-value pair.
 
-The *struct* keyword is used to declare a structure. Since structures are statically typed, every field in the structure must be associated with a data type. The naming rules and conventions for a structure is like that of a variable. The structure block must end with a semicolon.
+The *struct* keyword is used to declare a structure. Since structures are statically typed, every field in the structure must be associated with a data type. The naming rules and conventions for a structure is like that of a variable.
 
 ```rust
 struct Person {
