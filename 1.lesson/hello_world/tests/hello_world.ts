@@ -3,6 +3,7 @@ import { Program } from "@coral-xyz/anchor";
 import { HelloWorld } from "../target/types/hello_world";
 
 describe("hello_world", () => {
+  // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.HelloWorld as Program<HelloWorld>;
@@ -17,9 +18,10 @@ describe("hello_world", () => {
       helloWorldAccount: hellog_world.publicKey,
       systemProgram: anchor.web3.SystemProgram.programId,
     }).signers([signer, hellog_world]).rpc();
-
   });
 });
+
+
 async function airdrop(connection: any, address: any, amount = 1000000000) {
   await connection.confirmTransaction(await connection.requestAirdrop(address, amount), "confirmed");
 }
