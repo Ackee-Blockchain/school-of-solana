@@ -1,6 +1,7 @@
 # 6. Lecture - Security
 
 ## Table of Contents
+- [Common Solana Attack Vectors](#common-solana-attack-vectors)
 - [Solana Runtime Policy](#solana-runtime-policy)
     - [Immutability](#immutability)
     - [Data](#data)
@@ -21,6 +22,11 @@
     - [Bump Seed Canonicalization](#bump-seed-canonicalization)
     - [Closing Accounts and Revival Attacks](#closing-accounts-and-revival-attacks)
 ---
+
+# Common Solana Attack Vectors
+
+> [!IMPORTANT]
+> For the Common Attack Vectors on Solana check the [Common Attack Vectors](https://github.com/Ackee-Blockchain/Solana-Auditors-Bootcamp/tree/master/Lesson-6) created for Solana Auditors Bootcamp.
 
 # Solana Runtime Policy
 
