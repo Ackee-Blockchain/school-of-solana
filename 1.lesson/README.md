@@ -25,8 +25,8 @@ In order not to waste time on our first lecture, please **prepare/install some s
 | -------------------------------------------| --------------------------------| ----------------------| ------------------------------|
 | Windows subsystem for Linux(WSL)           | optional but highly recommended | 2.0                   | [Instructions][WSL]           |
 | Rust                                       | -                               | stable                | [Instructions][Rust]          |
-| Solana tool suite                          | -                               | 1.18.11               | [Instructions][Solana]        |
-| Anchor framework                           | -                               | 0.29.0                | [Instructions][Anchor]        |
+| Solana tool suite                          | -                               | 1.18.18               | [Instructions][Solana]        |
+| Anchor framework                           | -                               | 0.30.1                | [Instructions][Anchor]        |
 | VSCode                                     | chose your own preferred IDE    | -                     | [Instructions][VSCode]        |
 | RustAnalyzer                               | optional extension for VSCode   | -                     | [Instructions][RustAnalyzer]  |
 | Docker                                     | comming soon                    | -                     | [Instructions][Docker Image]  |
@@ -51,9 +51,11 @@ In order not to waste time on our first lecture, please **prepare/install some s
 
     ```bash
     solana config set --url localhost # useful for local development
+    solana config set -u l # shorter option, l stands for localhost
     ```
     ```bash
     solana config set --url devnet # useful for devnet testing
+    solana config set -u d # shorter option, d stands for devnet
     ```
     More at [Clusters and Public RPC Endpoints](https://solana.com/docs/core/clusters)
 
@@ -71,6 +73,7 @@ In order not to waste time on our first lecture, please **prepare/install some s
     ```bash
     solana airdrop 5 <YOUR_PUBKEY>
     ```
+    > You can also use the [Solana Faucet](https://faucet.solana.com/) to get some SOL.
 
 - #### Get PubKey from Keypair
     ```bash
