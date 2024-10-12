@@ -1,9 +1,12 @@
 [submodule "Solana-Handbook"]
 	path = Solana-Handbook
 	url = https://github.com/Ackee-Blockchain/solana-handbook
+	branch = master
 [submodule "5.lesson/debugging-example"]
 	path = 5.lesson/debugging-example
 	url = https://github.com/Ackee-Blockchain/sos-debugging-lecture
+	branch = master
 [submodule "Bonus-Trident/Trident"]
 	path = Bonus-Trident/Trident
 	url = https://github.com/Ackee-Blockchain/trident
+	branch = master
