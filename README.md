@@ -58,6 +58,12 @@ School of Solana Season 6:
 - The desire to learn new things
 
 - For more info check also the [Dev Setup](./1.lesson/README.md/#dev-setup)
+
+> [!TIP]
+> **Skip the Dev Setup**
+>
+> If you want to skip the Dev Setup, use the [Docker Image](./1.lesson/Docker.md) with environment already prepared for you!
+
 -----
 
 # 🔬 How to participate:

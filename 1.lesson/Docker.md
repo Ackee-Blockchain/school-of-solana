@@ -13,11 +13,11 @@
 > [!IMPORTANT]
 > To use the pre-built Docker image for this course, you can pull the image from Docker Hub:
 > ```bash
-> docker pull TODO
+> docker pull ackeeblockchain/school-of-solana:latest
 > ```
 > Then run the following command. This will create new container.
 > ```bash
-> docker run -it --name TODO -p 8899:8899 -p 9900:9900 -p 8000:8000 -p 8080:8080 TODO
+> docker run -it --name school-of-solana -p 8899:8899 -p 9900:9900 -p 8000:8000 -p 8080:8080 ackeeblockchain/school-of-solana:latest
 > ```
 > Then visit the following url
 >
@@ -25,12 +25,12 @@
 >
 > When you want to continue work inside the Docker Image, use
 > ```bash
-> docker start TODO
+> docker start school-of-solana
 > ```
 > and again visit the URL.
 > To stop the Image, use
 > ```bash
-> docker stop TODO
+> docker stop school-of-solana
 > ```
 > It is also possible to start/stop the Imagre from the Docker Desktop GUI.
 
