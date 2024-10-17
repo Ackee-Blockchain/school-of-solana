@@ -48,7 +48,9 @@ School of Solana Season 6:
 -----
 
 # 📚 Our learning material:
-- We created the [Solana Handbook](https://ackeeblockchain.com/solana-handbook.pdf) to provide study material for School of Solana devs. It should serve as an entry point for new Solana developers or blockchain enthusiasts wishing to learn about Solana. Read the [Solana Handbook](https://ackeeblockchain.com/solana-handbook.pdf).
+We created the [Solana Handbook](https://ackee.xyz/solana/book/) to provide study material for School of Solana devs. It should serve as an entry point for new Solana developers or blockchain enthusiasts wishing to learn about Solana. 
+
+- Read the [Solana Handbook](https://ackee.xyz/solana/book/).
 
 -----
 
