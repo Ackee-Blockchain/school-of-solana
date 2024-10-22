@@ -343,4 +343,4 @@ There are a couple of `require!` macros to choose from ([search for require in t
 -----
 
 ### Need help?
-If you have any questions feel free to reach out to us at [Discord](https://discord.gg/z3JVuZyFnp).
+If you have any questions feel free to reach out to us on [Discord](https://discord.gg/z3JVuZyFnp).
