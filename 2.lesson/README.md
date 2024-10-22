@@ -4,15 +4,17 @@
 ## Table of Contents
 - [2. Lecture - Introduction to Rust](#2-lecture---introduction-to-rust)
   - [Table of Contents](#table-of-contents)
-  - [Learning resources:](#learning-resources)
   - [Rust](#rust)
   - [Rust Data Types](#rust-data-types)
   - [Rust Variables](#rust-variables)
   - [Mutable](#mutable)
   - [Shadowing](#shadowing)
   - [Rust Structure](#rust-structure)
+  - [Functions](#functions)
+  - [Expressions](#expressions)
+  - [Generics](#generics)
   - [Ownership](#ownership)
-  - [What is Borrowing?](#what-is-borrowing)
+  - [Borrowing](#borrowing)
     - [The Rules of References](#the-rules-of-references)
     - [In what order will it be dropped?](#in-what-order-will-it-be-dropped)
   - [The Slice Type](#the-slice-type)
@@ -20,13 +22,9 @@
   - [Rust Enums](#rust-enums)
   - [Rust Option\<T\>](#rust-optiont)
   - [Rust Result](#rust-result)
-  - [What is a macro?](#what-is-a-macro)
+  - [Macros](#macros)
     - [Need help?](#need-help)
 
-## Learning resources:
-- [Rust book](https://doc.rust-lang.org/book/)
-- [Exercism](https://exercism.org/tracks/rust)
-- [Cheat](https://cheats.rs/#memory-lifetimes)
 
 ## Rust
 
@@ -35,6 +33,12 @@ Rust is a modern systems programming language focusing on safety, speed, and con
 Rust is a *statically* and *strongly* typed systems programming language. Statically means that all types are known at compile-time, strongly means that these types are designed to make it harder to write incorrect programs.
 
 The big difference from C and C++ is that Rust is *safe by default.* All memory accesses are checked. It is not possible to corrupt memory by accident.
+
+>[!TIP]
+>### Learning resources:
+>- [Rust book](https://doc.rust-lang.org/book/)
+>- [Exercism](https://exercism.org/tracks/rust)
+>- [Cheat](https://cheats.rs/#memory-lifetimes)
 
 ## Rust Data Types
 
@@ -75,6 +79,79 @@ fn main() {
 }
 ```
 
+## Functions
+
+We define a function in Rust by entering `fn` followed by a function name and a set of parentheses. We can call any function we’ve defined by entering its name followed by a set of parentheses. Because `plus_one` is defined in the program, it can be called from inside the `main` function.
+
+```rust
+fn main() {
+    let x = plus_one(5);
+
+    println!("The value of x is: {x}");
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
+}
+```
+
+We can define functions to have parameters, which are special variables that are part of a function’s signature. When a function has parameters, you can provide it with concrete values for those parameters. The declaration of `plus_one` has one parameter named `x`. The type of `x` is specified as `i32`.
+
+```rust
+(x: i32)
+```
+
+Functions can return values to the code that calls them. We don’t name return values, but we must declare their type after an arrow (`->`). You can return early from a function by using the `return` keyword and specifying a value, but most functions return the last expression implicitly. The return type of `plus_one` is `i32`.
+
+```rust
+-> i32
+```
+
+## Expressions
+
+In Rust, expressions are fundamental building blocks of the language. Expression is a piece of code that evaluates to a resultant value. Calling a function is an expression. Calling a macro is an expression. A new scope block created with curly brackets is an expression, for example:
+
+```rust
+fn main() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("The value of y is: {y}");
+}
+```
+```rust
+{
+    let x = 3;
+    x + 1
+}
+```
+
+This block evaluates to 4. Expressions do not include ending semicolons. If you add a semicolon to the end of an expression, you turn it into a statement, and it will then not return a value.
+
+## Generics
+
+We use generics to create definitions for items like function signatures or structs, which we can then use with many different concrete data types. To parameterize the types in a new single function, we need to name the type parameter. We’ll use `T` because, by convention, type parameter names in Rust are short, often just one letter.
+
+```rust
+fn identity<T>(value: T) -> T {
+    value
+}
+
+fn main() {
+    let x = identity(10);        // x is inferred to be i32
+    let y = identity(3.14);      // y is inferred to be f64
+    let z = identity("Hello");   // z is inferred to be &str
+
+    println!("x: {}", x);        // prints 10
+    println!("y: {}", y);        // prints 3.14
+    println!("z: {}", z);        // prints Hello
+}
+```
+
+The `identity` function accepts a value of type `T` and returns it unchanged.
+
 ## Ownership
 
 Ownership is Rust’s most unique feature and has deep implications for the rest of the language.
@@ -94,7 +171,7 @@ First, let’s take a look at the ownership rules. Keep these rules in mind as w
 - There can only be one owner at a time.
 - When the owner goes out of scope, the value will be dropped.
 
-## What is Borrowing?
+## Borrowing
 
 When a function transfers its control over a variable/value to another function temporarily, for a while, it is called borrowing. This is achieved by passing a reference to the variable **_(& var_name)_** rather than passing the variable/value itself to the function. The ownership of the variable/ value is transferred to the original owner of the variable after the function to which the control was passed completes execution.
 
@@ -265,13 +342,23 @@ fn main() {
 }
 ```
 
-## What is a macro?
+## Macros
 
 Rust provides a powerful macro system that allows meta-programming. As you have seen in the previous example, macros look like functions, except that their name ends with a bang(!), but instead of generating a function call, macros are expanded into source code that gets compiled with the rest of the program. Therefore, they provide more runtime features to a program unlike functions. Macros are an extended version of functions.
+
+``` rust
+macro_rules! say_hello {
+    // `()` indicates that the macro takes no argument.
+    () => {
+        // The macro will expand into the contents of this block.
+        println!("Hello!")
+    };
+}
+```
 
 -----
 
 
 
 ### Need help?
-If you have any questions feel free to reach out to us at [Discord](https://discord.gg/z3JVuZyFnp).
+If you have any questions feel free to reach out to us on [Discord](https://discord.gg/z3JVuZyFnp).
