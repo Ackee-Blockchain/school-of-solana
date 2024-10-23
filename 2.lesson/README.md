@@ -37,7 +37,7 @@ The big difference from C and C++ is that Rust is *safe by default.* All memory
 >[!TIP]
 >### Learning resources:
 >- [Rust book](https://doc.rust-lang.org/book/)
->- [Cheat](https://cheats.rs)
+>- [Rust Cheat Sheet](https://cheats.rs)
 
 ## Rust Data Types
 
