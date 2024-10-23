@@ -37,8 +37,7 @@ The big difference from C and C++ is that Rust is *safe by default.* All memory
 >[!TIP]
 >### Learning resources:
 >- [Rust book](https://doc.rust-lang.org/book/)
->- [Exercism](https://exercism.org/tracks/rust)
->- [Cheat](https://cheats.rs/#memory-lifetimes)
+>- [Cheat](https://cheats.rs)
 
 ## Rust Data Types
 
@@ -173,7 +172,7 @@ First, let’s take a look at the ownership rules. Keep these rules in mind as w
 
 ## Borrowing
 
-When a function transfers its control over a variable/value to another function temporarily, for a while, it is called borrowing. This is achieved by passing a reference to the variable **_(& var_name)_** rather than passing the variable/value itself to the function. 
+When a function transfers its control over a variable/value to another function temporarily, for a while, it is called borrowing. This is achieved by passing a reference to the variable **_(& var_name)_** rather than passing the variable/value itself to the function.
 
 ### The Rules of References
 
