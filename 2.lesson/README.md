@@ -1,29 +1,26 @@
 # 2. Lecture - Introduction to Rust
 
-
 ## Table of Contents
-- [2. Lecture - Introduction to Rust](#2-lecture---introduction-to-rust)
-  - [Table of Contents](#table-of-contents)
+<!-- no toc -->
   - [Rust](#rust)
-  - [Rust Data Types](#rust-data-types)
-  - [Rust Variables](#rust-variables)
+  - [Data Types](#data-types)
+  - [Variables](#variables)
   - [Mutable](#mutable)
   - [Shadowing](#shadowing)
-  - [Rust Structure](#rust-structure)
+  - [Structure](#structure)
+  - [Enums](#enums)
   - [Functions](#functions)
   - [Expressions](#expressions)
-  - [Generics](#generics)
   - [Ownership](#ownership)
   - [Borrowing](#borrowing)
     - [The Rules of References](#the-rules-of-references)
     - [In what order will it be dropped?](#in-what-order-will-it-be-dropped)
   - [The Slice Type](#the-slice-type)
-  - [Rust Traits](#rust-traits)
-  - [Rust Enums](#rust-enums)
-  - [Rust Option\<T\>](#rust-optiont)
-  - [Rust Result](#rust-result)
+  - [Traits](#traits)
+  - [Option\<T\>](#optiont)
+  - [Result](#result)
+  - [Generics](#generics)
   - [Macros](#macros)
-    - [Need help?](#need-help)
 
 
 ## Rust
@@ -39,13 +36,13 @@ The big difference from C and C++ is that Rust is *safe by default.* All memory
 >- [Rust Book](https://doc.rust-lang.org/book/)
 >- [Rust Cheat Sheet](https://cheats.rs)
 
-## Rust Data Types
+## Data Types
 
 Rust is a statically typed language. Every value in Rust is of a certain data type. The compiler can automatically infer data type of the variable based on the value assigned to it.
 
 Use the **_let_** keyword to declare a variable.
 
-## Rust Variables
+## Variables
 
 The data type is optional while declaring a variable in Rust. The data type is inferred from the value assigned to the variable.
 
@@ -57,7 +54,7 @@ Variables are immutable by default. Prefix the variable name with **mut** keyw
 
 Rust allows programmers to declare variables with the same name. In such a case, the new variable overrides the previous variable.
 
-## Rust Structure
+## Structure
 
 Arrays are used to represent a homogeneous collection of values. Similarly, a structure is another user defined data type available in Rust that allows us to combine data items of different types, including another structure. A structure defines data as a key-value pair.
 
@@ -75,6 +72,36 @@ fn main() {
         last_name: "Smith".to_string()
     };
     println!("person {} {}", p.first_name,p.last_name);
+}
+```
+
+## Enums
+
+Enums are types which have a few definite values.
+
+```rust
+enum CarType {
+   Hatch,
+   Sedan,
+   SUV
+}
+fn print_size(car:CarType) {
+   match car {
+      CarType::Hatch => {
+         println!("Small sized car");
+      },
+      CarType::Sedan => {
+         println!("Medium sized car");
+      },
+      CarType::SUV =>{
+         println!("Large sized Sports Utility car");
+      }
+   }
+}
+fn main(){
+   print_size(CarType::SUV);
+   print_size(CarType::Hatch);
+   print_size(CarType::Sedan);
 }
 ```
 
@@ -128,28 +155,6 @@ fn main() {
 ```
 
 This block evaluates to 4. Expressions do not include ending semicolons. If you add a semicolon to the end of an expression, you turn it into a statement, and it will then not return a value.
-
-## Generics
-
-We use generics to create definitions for items like function signatures or structs, which we can then use with many different concrete data types. To parameterize the types in a new single function, we need to name the type parameter. We’ll use `T` because, by convention, type parameter names in Rust are short, often just one letter.
-
-```rust
-fn identity<T>(value: T) -> T {
-    value
-}
-
-fn main() {
-    let x = identity(10);        // x is inferred to be i32
-    let y = identity(3.14);      // y is inferred to be f64
-    let z = identity("Hello");   // z is inferred to be &str
-
-    println!("x: {}", x);        // prints 10
-    println!("y: {}", y);        // prints 3.14
-    println!("z: {}", z);        // prints Hello
-}
-```
-
-The `identity` function accepts a value of type `T` and returns it unchanged.
 
 ## Ownership
 
@@ -228,7 +233,7 @@ fn main() {
 }
 ```
 
-## Rust Traits
+## Traits
 
 Please note that Rust does not spell `struct` *class*. The keyword `class` in other languages is so overloaded with meaning that it effectively shuts down original thinking.
 
@@ -263,37 +268,7 @@ fn main() {
 }
 ```
 
-## Rust Enums
-
-Enums are types which have a few definite values.
-
-```rust
-enum CarType {
-   Hatch,
-   Sedan,
-   SUV
-}
-fn print_size(car:CarType) {
-   match car {
-      CarType::Hatch => {
-         println!("Small sized car");
-      },
-      CarType::Sedan => {
-         println!("Medium sized car");
-      },
-      CarType::SUV =>{
-         println!("Large sized Sports Utility car");
-      }
-   }
-}
-fn main(){
-   print_size(CarType::SUV);
-   print_size(CarType::Hatch);
-   print_size(CarType::Sedan);
-}
-```
-
-## Rust Option\<T\>
+## Option\<T\>
 
 The `Option<T>` enum has two variants:
 
@@ -317,7 +292,7 @@ fn main() {
 }
 ```
 
-## Rust Result
+## Result
 
 The return is annotated with the Result enum. We specify the types that the Result will contain when the function returns. If the string is long enough, we return a string literal. If there is an error, we will return a message that is a String. This explains the **`Result<&str, String>`**
 .
@@ -341,6 +316,28 @@ fn main() {
 }
 ```
 
+## Generics
+
+We use generics to create definitions for items like function signatures or structs, which we can then use with many different concrete data types. To parameterize the types in a new single function, we need to name the type parameter. We’ll use `T` because, by convention, type parameter names in Rust are short, often just one letter.
+
+```rust
+fn identity<T>(value: T) -> T {
+    value
+}
+
+fn main() {
+    let x = identity(10);        // x is inferred to be i32
+    let y = identity(3.14);      // y is inferred to be f64
+    let z = identity("Hello");   // z is inferred to be &str
+
+    println!("x: {}", x);        // prints 10
+    println!("y: {}", y);        // prints 3.14
+    println!("z: {}", z);        // prints Hello
+}
+```
+
+The `identity` function accepts a value of type `T` and returns it unchanged.
+
 ## Macros
 
 Rust provides a powerful macro system that allows meta-programming. As you have seen in the previous example, macros look like functions, except that their name ends with a bang(!), but instead of generating a function call, macros are expanded into source code that gets compiled with the rest of the program. Therefore, they provide more runtime features to a program unlike functions. Macros are an extended version of functions.
@@ -356,8 +353,6 @@ macro_rules! say_hello {
 ```
 
 -----
-
-
 
 ### Need help?
 If you have any questions feel free to reach out to us on [Discord](https://discord.gg/z3JVuZyFnp).
