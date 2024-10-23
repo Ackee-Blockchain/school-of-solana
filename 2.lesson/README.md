@@ -173,7 +173,7 @@ First, let’s take a look at the ownership rules. Keep these rules in mind as w
 
 ## Borrowing
 
-When a function transfers its control over a variable/value to another function temporarily, for a while, it is called borrowing. This is achieved by passing a reference to the variable **_(& var_name)_** rather than passing the variable/value itself to the function. The ownership of the variable/ value is transferred to the original owner of the variable after the function to which the control was passed completes execution.
+When a function transfers its control over a variable/value to another function temporarily, for a while, it is called borrowing. This is achieved by passing a reference to the variable **_(& var_name)_** rather than passing the variable/value itself to the function. 
 
 ### The Rules of References
 
