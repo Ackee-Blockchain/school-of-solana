@@ -3,7 +3,7 @@ use puppet::cpi::accounts::SetData;
 use puppet::program::Puppet;
 use puppet::{self, Data};
 
-declare_id!("BGzJov5eNHhCU6vUgitmuLxv91nxRMjzt9zpWMDhF22T");
+declare_id!("5fA4GU4TwqDxJv58Uq1jBDVWCevJXekRgMbwT5cofSi5");
 
 // Defines the main functionalities of the puppet_master program.
 #[program]

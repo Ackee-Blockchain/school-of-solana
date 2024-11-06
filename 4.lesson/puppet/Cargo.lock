@@ -1204,7 +1204,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "puppet-master"
+name = "puppet_master"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",

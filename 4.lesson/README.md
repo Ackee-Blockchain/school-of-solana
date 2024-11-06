@@ -90,10 +90,10 @@ pub struct Data {
 
 There's nothing special happening here. It's a pretty simple program! The interesting part is how it interacts with the next program we are going to create.
 
-Still, inside the project, initialize a new `puppet-master` program using,
+Still, inside the project, initialize a new `puppet_master` program using,
 
 ```bash
-anchor new puppet-master
+anchor new puppet_master
 ```
 inside the workspace and copy the following code.
 
@@ -136,16 +136,16 @@ pub struct PullStrings<'info> {
 }
 ```
 
-Make sure that all of the Program IDs match. This means, when you run `anchor keys list`, the output of the command has to match with the Program IDs specified inside `Anchor.toml` and also with the Program IDs used within the `declare_id!` macro of both programs. If by any chance these do not match, use Program IDs from the `anchor keys list` as a reference (i.e. change `declare_id!` accordingly). Finally, import the `puppet` program into the `puppet-master` program by adding the following line to the `[dependencies]` section of the `Cargo.toml` file inside the `puppet-master` program folder:
+Make sure that all of the Program IDs match. This means, when you run `anchor keys list`, the output of the command has to match with the Program IDs specified inside `Anchor.toml` and also with the Program IDs used within the `declare_id!` macro of both programs. If by any chance these do not match, use Program IDs from the `anchor keys list` as a reference (i.e. change `declare_id!` accordingly). Finally, import the `puppet` program into the `puppet_master` program by adding the following line to the `[dependencies]` section of the `Cargo.toml` file inside the `puppet_master` program folder:
 
 ```toml
 puppet = { path = "../puppet", features = ["cpi"]}
 ```
 
 
-The `features = ["cpi"]` is used so we can not only use puppet's types but also its instruction builders and CPI functions. Without those, we would have to use low level solana syscalls. Fortunately, Anchor provides abstractions on top of those. By enabling the cpi feature, the puppet-master program gets access to the `puppet::cpi` module. Anchor generates this module automatically and it contains tailor-made instructions builders and CPI helpers for the program.
+The `features = ["cpi"]` is used so we can not only use puppet's types but also its instruction builders and CPI functions. Without those, we would have to use low level solana syscalls. Fortunately, Anchor provides abstractions on top of those. By enabling the cpi feature, the puppet_master program gets access to the `puppet::cpi` module. Anchor generates this module automatically and it contains tailor-made instructions builders and CPI helpers for the program.
 
-In the case of the puppet program, the puppet-master uses the `SetData` instruction builder struct provided by the `puppet::cpi::accounts` module to submit the accounts the `SetData` instruction of the puppet program expects. Then, the puppet-master creates a new CPI context and passes it to the `puppet::cpi::set_data` cpi function. This function has the exact same function arguments as the `set_data` function in the puppet program with the exception that it expects a `CpiContext` instead of a `Context`.
+In the case of the puppet program, the puppet_master uses the `SetData` instruction builder struct provided by the `puppet::cpi::accounts` module to submit the accounts the `SetData` instruction of the puppet program expects. Then, the puppet_master creates a new CPI context and passes it to the `puppet::cpi::set_data` cpi function. This function has the exact same function arguments as the `set_data` function in the puppet program with the exception that it expects a `CpiContext` instead of a `Context`.
 
 We can verify that everything works as expected by replacing the contents of the `puppet.ts` file with the following code and running `anchor test`.
 
@@ -203,7 +203,7 @@ describe('puppet', () => {
 
 ### Privilege Extension
 
-CPIs extend the privileges of the caller to the callee. The puppet account was passed as a mutable account to the puppet-master but it was still mutable in the puppet program as well (otherwise the `assert` in the test would've failed). The same applies to signatures.
+CPIs extend the privileges of the caller to the callee. The puppet account was passed as a mutable account to the puppet_master but it was still mutable in the puppet program as well (otherwise the `assert` in the test would've failed). The same applies to signatures.
 
 > Privilege extension is convenient but also dangerous. If a CPI is unintentionally made to a malicious program, this program has the same privileges as the caller. Anchor protects you from CPIs to malicious programs with two measures. First, the `Program<'info, T>` type checks that the given account is the expected program `T`. Should you ever forget to use the `Program` type, the automatically generated cpi function (in the previous example this was `puppet::cpi::set_data`) also checks that the cpi_program argument equals the expected program.
 

@@ -3,12 +3,12 @@ anchor_version = "0.30.1"
 solana_version = "1.18.18"
 
 [features]
-seeds = false
+resolution = true
 skip-lint = false
 
 [programs.localnet]
 puppet = "7kZGeneY2LYUhjPoveEkriYFWinHLbMfDbBQpcTvQbip"
-puppet-master = "BGzJov5eNHhCU6vUgitmuLxv91nxRMjzt9zpWMDhF22T"
+puppet_master = "5fA4GU4TwqDxJv58Uq1jBDVWCevJXekRgMbwT5cofSi5"
 
 [registry]
 url = "https://api.apr.dev"
