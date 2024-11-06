@@ -7,7 +7,7 @@
   - [Privilege Extension](#privilege-extension)
   - [Reloading an Account](#reloading-an-account)
   - [Returning values from handler functions](#returning-values-from-handler-functions)
-  - [❗❗Note](#note)
+  - [Note](#note)
 - [Program Derived Addresses](#program-derived-addresses)
   - [Creation of a PDA](#creation-of-a-pda)
   - [Using PDAs](#using-pdas)
@@ -267,7 +267,7 @@ pub fn pull_strings(ctx: Context<PullStrings>, data: u64) -> Result<()> {
 }
 ```
 
-### ❗❗Note
+### Note
 The type being returned must implement the `AnchorSerialize` and `AnchorDeserialize` traits, so for custom structure types and enums you need to do for example:
 
 ```rust
