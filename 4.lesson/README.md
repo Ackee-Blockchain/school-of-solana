@@ -1,28 +1,22 @@
 # 4. Lecture - Solana programming model II
 
 ## Table of Contents
-- [4. Lecture - Solana programming model II](#4-lecture---solana-programming-model-ii)
-  - [Table of Contents](#table-of-contents)
-- [Anchor Framework](#anchor-framework)
-  - [Cross-Program Invocations](#cross-program-invocations)
-    - [Setting up basic CPI functionality](#setting-up-basic-cpi-functionality)
-    - [Privilege Extension](#privilege-extension)
-    - [Reloading an Account](#reloading-an-account)
-    - [Returning values from handler functions](#returning-values-from-handler-functions)
-    - [❗❗Note](#note)
-  - [Program Derived Addresses](#program-derived-addresses)
-    - [Creation of a PDA](#creation-of-a-pda)
-    - [Using PDAs](#using-pdas)
-      - [Hashmap-like structures using PDAs](#hashmap-like-structures-using-pdas)
-      - [Building hashmaps with PDAs](#building-hashmaps-with-pdas)
-      - [How to build PDA hashmaps in Anchor](#how-to-build-pda-hashmaps-in-anchor)
-      - [Enforcing uniqueness](#enforcing-uniqueness)
-    - [Conclusion](#conclusion)
-    - [Need help?](#need-help)
-
+<!-- no toc -->
+- [Cross-Program Invocations](#cross-program-invocations)
+  - [Setting up basic CPI functionality](#setting-up-basic-cpi-functionality)
+  - [Privilege Extension](#privilege-extension)
+  - [Reloading an Account](#reloading-an-account)
+  - [Returning values from handler functions](#returning-values-from-handler-functions)
+  - [Note](#note)
+- [Program Derived Addresses](#program-derived-addresses)
+  - [Creation of a PDA](#creation-of-a-pda)
+  - [Using PDAs](#using-pdas)
+    - [Hashmap-like structures using PDAs](#hashmap-like-structures-using-pdas)
+    - [Building hashmaps with PDAs](#building-hashmaps-with-pdas)
+    - [How to build PDA hashmaps in Anchor](#how-to-build-pda-hashmaps-in-anchor)
+    - [Enforcing uniqueness](#enforcing-uniqueness)
+  - [Conclusion](#conclusion)
 ---
-# Anchor Framework
-
 ## Cross-Program Invocations
 
 Often it's useful for programs to interact with each other. In Solana this is achieved via Cross-Program Invocations (CPIs).
@@ -41,9 +35,7 @@ and copy the following code.
 ```rust
 use anchor_lang::prelude::*;
 
-
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
-
+declare_id!("7kZGeneY2LYUhjPoveEkriYFWinHLbMfDbBQpcTvQbip");
 
 // Defines the main functionalities of the puppet program.
 #[program]
@@ -56,11 +48,11 @@ pub mod puppet {
     }
 
     // Function to set `data` on a puppet account.
-    pub fn set_data(ctx: Context<SetData>, data: u64) -> Result<()> {
+    pub fn set_data(ctx: Context<SetData>, data: u64) -> Result<u64> {
         // Access the puppet account and update its `data`.
         let puppet = &mut ctx.accounts.puppet;
         puppet.data = data;
-        Ok(())
+        Ok(data)
     }
 }
 
@@ -98,10 +90,10 @@ pub struct Data {
 
 There's nothing special happening here. It's a pretty simple program! The interesting part is how it interacts with the next program we are going to create.
 
-Still, inside the project, initialize a new `puppet-master` program using,
+Still, inside the project, initialize a new `puppet_master` program using,
 
 ```bash
-anchor new puppet-master
+anchor new puppet_master
 ```
 inside the workspace and copy the following code.
 
@@ -111,9 +103,7 @@ use puppet::cpi::accounts::SetData;
 use puppet::program::Puppet;
 use puppet::{self, Data};
 
-
-declare_id!("HmbTLCmaGvZhKnn1Zfa1JVnp7vkMV4DYVxPLWBVoN65L");
-
+declare_id!("BGzJov5eNHhCU6vUgitmuLxv91nxRMjzt9zpWMDhF22T");
 
 // Defines the main functionalities of the puppet_master program.
 #[program]
@@ -131,7 +121,7 @@ mod puppet_master {
         // Create a CPI context with the program and accounts to call.
         let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
         // Perform the CPI call to set data on the puppet account.
-        puppet::cpi::set_data(cpi_ctx, data)
+        let result = puppet::cpi::set_data(cpi_ctx, data)
     }
 }
 
@@ -146,16 +136,16 @@ pub struct PullStrings<'info> {
 }
 ```
 
-Make sure that all of the Program IDs match. This means, when you run `anchor keys list`, the output of the command has to match with the Program IDs specified inside `Anchor.toml` and also with the Program IDs used within the `declare_id!` macro of both programs. IF by any chance these do not match, use Program IDs from the `anchor keys list` as a reference (i.e. change `declare_id!` accordingly). Finally, import the `puppet` program into the `puppet-master` program by adding the following line to the `[dependencies]` section of the `Cargo.toml` file inside the `puppet-master` program folder:
+Make sure that all of the Program IDs match. This means, when you run `anchor keys list`, the output of the command has to match with the Program IDs specified inside `Anchor.toml` and also with the Program IDs used within the `declare_id!` macro of both programs. If by any chance these do not match, use Program IDs from the `anchor keys list` as a reference (i.e. change `declare_id!` accordingly). Finally, import the `puppet` program into the `puppet_master` program by adding the following line to the `[dependencies]` section of the `Cargo.toml` file inside the `puppet_master` program folder:
 
 ```toml
 puppet = { path = "../puppet", features = ["cpi"]}
 ```
 
 
-The `features = ["cpi"]` is used so we can not only use puppet's types but also its instruction builders and CPI functions. Without those, we would have to use low level solana syscalls. Fortunately, Anchor provides abstractions on top of those. By enabling the cpi feature, the puppet-master program gets access to the `puppet::cpi` module. Anchor generates this module automatically and it contains tailor-made instructions builders and CPI helpers for the program.
+The `features = ["cpi"]` is used so we can not only use puppet's types but also its instruction builders and CPI functions. Without those, we would have to use low level solana syscalls. Fortunately, Anchor provides abstractions on top of those. By enabling the cpi feature, the puppet_master program gets access to the `puppet::cpi` module. Anchor generates this module automatically and it contains tailor-made instructions builders and CPI helpers for the program.
 
-In the case of the puppet program, the puppet-master uses the `SetData` instruction builder struct provided by the `puppet::cpi::accounts` module to submit the accounts the `SetData` instruction of the puppet program expects. Then, the puppet-master creates a new CPI context and passes it to the `puppet::cpi::set_data` cpi function. This function has the exact same function arguments as the `set_data` function in the puppet program with the exception that it expects a `CpiContext` instead of a `Context`.
+In the case of the puppet program, the puppet_master uses the `SetData` instruction builder struct provided by the `puppet::cpi::accounts` module to submit the accounts the `SetData` instruction of the puppet program expects. Then, the puppet_master creates a new CPI context and passes it to the `puppet::cpi::set_data` cpi function. This function has the exact same function arguments as the `set_data` function in the puppet program with the exception that it expects a `CpiContext` instead of a `Context`.
 
 We can verify that everything works as expected by replacing the contents of the `puppet.ts` file with the following code and running `anchor test`.
 
@@ -213,9 +203,9 @@ describe('puppet', () => {
 
 ### Privilege Extension
 
-CPIs extend the privileges of the caller to the callee. The puppet account was passed as a mutable account to the puppet-master but it was still mutable in the puppet program as well (otherwise the `assert` in the test would've failed). The same applies to signatures.
+CPIs extend the privileges of the caller to the callee. The puppet account was passed as a mutable account to the puppet_master but it was still mutable in the puppet program as well (otherwise the `assert` in the test would've failed). The same applies to signatures.
 
-> Privilege extension is convenient but also dangerous. If a CPI is unintentionally made to a malicious program, this program has the same privileges as the caller. Anchor protects you from CPIs to malicious programs with two measures. First, the Program<'info, T> type checks that the given account is the expected program T. Should you ever forget to use the Program type, the automatically generated cpi function (in the previous example this was puppet::cpi::set_data) also checks that the cpi_program argument equals the expected program.
+> Privilege extension is convenient but also dangerous. If a CPI is unintentionally made to a malicious program, this program has the same privileges as the caller. Anchor protects you from CPIs to malicious programs with two measures. First, the `Program<'info, T>` type checks that the given account is the expected program `T`. Should you ever forget to use the `Program` type, the automatically generated cpi function (in the previous example this was `puppet::cpi::set_data`) also checks that the cpi_program argument equals the expected program.
 
 ### Reloading an Account
 
@@ -229,7 +219,6 @@ if ctx.accounts.puppet.data != 42 {
     panic!();
 }
 Ok(())
-
 ```
 
 The reason the data field has not been updated to 42 in the caller is that at the beginning of the instruction the `Account<'info, T>` type deserializes the incoming bytes into a new struct. This struct is no longer connected to the underlying data in the account. The CPI changes the data in the underlying account but since the struct in the caller has no connection to the underlying account the struct in the caller remains unchanged.
@@ -278,7 +267,7 @@ pub fn pull_strings(ctx: Context<PullStrings>, data: u64) -> Result<()> {
 }
 ```
 
-### ❗❗Note
+### Note
 The type being returned must implement the `AnchorSerialize` and `AnchorDeserialize` traits, so for custom structure types and enums you need to do for example:
 
 ```rust
@@ -302,14 +291,14 @@ Unlike normal addresses, PDAs are not public keys and therefore do not have an a
 
 Before we dive into how to use PDAs in anchor, here's a short explainer on what PDAs are.
 
-PDAs are created by hashing a number of seeds the user can choose and the id of a program:
+PDAs are created by hashing a number of **seeds** the user can choose and the **id** of a program:
 
 ```rust
 // pseudo code
 let pda = hash(seeds, program_id);
 ```
 
-There's a 50% chance that this hash function results in a public key (but PDAs are not public keys), so a bump has to be searched for so that we get a PDA:
+There's a 50% chance that this hash function results in a public key (but PDAs are not public keys), so a **bump** has to be searched for so that we get a PDA:
 
 
 ```rust
@@ -327,9 +316,9 @@ fn find_pda(seeds, program_id) {
 ```
 
 
-It is technically possible that no bump is found within 256 tries but this probability is negligible. If you're interested in the exact calculation of a PDA, check out the [solana_program source code](https://docs.rs/solana-program/latest/solana_program/pubkey/struct.Pubkey.html#method.find_program_address).
+It is technically possible that no bump is found within 256 tries but this probability is negligible. If you're interested in the exact calculation of a PDA, check out the [solana_program source code](https://docs.rs/solana-pubkey/2.1.0/solana_pubkey/struct.Pubkey.html#method.find_program_address).
 
-The first bump that results in a PDA is commonly called the "canonical bump". Other bumps may also result in a PDA but it's recommended to only use the canonical bump to avoid confusion.
+The first bump that results in a PDA is commonly called the "**canonical bump**". Other bumps may also result in a PDA but it's recommended to only use the canonical bump to avoid confusion.
 
 ### Using PDAs
 
@@ -341,7 +330,7 @@ Before we dive into the specifics of creating hashmaps in anchor, let's look at 
 
 #### Building hashmaps with PDAs
 
-PDAs are hashed from the bump, a program id, but also a number of seeds which can be freely chosen by the user. These seeds can be used to build hashmap-like structures on-chain.
+PDAs are hashed from the **bump**, a **program id**, but also a number of **seeds** which can be freely chosen by the user. These seeds can be used to build hashmap-like structures on-chain.
 
 For instance, imagine you're building an in-browser game and want to store some user stats. Maybe their level and their in-game name. You could create an account with a layout that looks like this:
 
@@ -367,7 +356,7 @@ pub struct UserStats {
 }
 ```
 
-and encode the information about the relationship between the user and the user stats account in the address of the user stats account itself.
+The information about the relationship between the user and the user stats account is encoded in the address of the user stats account itself.
 
 Reusing the pseudo code from above:
 
@@ -378,7 +367,7 @@ let (pda, bump) = find_pda(seeds, game_program_id);
 ```
 
 
-When a user connects to your website, this pda calculation can be done client-side using their user account address as the authority. The resulting pda then serves as the address of the user's stats account. The b"user-stats" is added in case there are other account types that are also PDAs. If there were an inventory account, it could be inferred using these seeds:
+When a user connects to your website, this pda calculation can be done client-side using their user account address as the authority. The resulting PDA then serves as the address of the user's stats account. `b"user-stats"` is added in case there are other account types that are also PDAs. If there were an inventory account, it could be inferred using these seeds:
 
 
 ```rust
@@ -401,7 +390,6 @@ and copy the following code
 use anchor_lang::prelude::*;
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
-
 
 // Defines the `game` module containing the business logic.
 #[program]
@@ -451,7 +439,7 @@ pub struct CreateUserStats<'info> {
 
 In the account validation struct we use `seeds` together with `init` to create a PDA with the desired seeds. Additionally, we add an empty `bump` constraint to signal to anchor that it should find the canonical bump itself. Then, in the handler, we call `ctx.bumps.user_stats` to get the bump anchor found and save it to the user stats account as an extra property.
 
-If we then want to use the created pda in a different instruction, we can add a new validation struct (This will check that the `user_stats` account is the pda created by running `hash(seeds, user_stats.bump, game_program_id)`):
+If we then want to use the created PDA in a different instruction, we can add a new validation struct (This will check that the `user_stats` account is the pda created by running `hash(seeds, user_stats.bump, game_program_id)`):
 
 
 ```rust
@@ -505,7 +493,7 @@ describe('game', async () => {
   // Test to verify name setting and changing functionality.
   it('Sets and changes name!', async () => {
     // Find the Program Derived Address (PDA) for the userStats account.
-    const [userStatsPDA, _] = await PublicKey.findProgramAddress(
+    const [userStatsPDA, _] = await PublicKey.findProgramAddressSync(
       [
         anchor.utils.bytes.utf8.encode('user-stats'), // Encode the seed for the PDA.
         provider.wallet.publicKey.toBuffer(), // Include the public key of the wallet as part of the seed.
@@ -541,19 +529,19 @@ describe('game', async () => {
 ```
 
 
-Exactly as described in the subchapter before this one, we use a find function to find the PDA. We can then use it just like a normal address. Well, almost. When we call createUserStats, we don't have to add the PDA to the [signers] array even though account creation requires a signature. This is because it is impossible to sign the transaction from outside the program as the PDA (it's not a public key so there is no private key to sign with). Instead, the signature is added when the CPI to the system program is made. We're going to explain how this works in the Programs as Signers section.
+Exactly as described in the subchapter before this one, we use a find function to find the PDA. We can then use it just like a normal address. Well, almost. When we call `createUserStats`, we don't have to add the PDA to the [signers] array even though account creation requires a signature. This is because it is impossible to sign the transaction from outside the program as the PDA (it's not a public key so there is no private key to sign with). Instead, the signature is added when the CPI to the system program is made.
 
 #### Enforcing uniqueness
 
-A subtle result of this hashmap structure is enforced uniqueness. When init is used with seeds and bump, it will always search for the canonical bump. This means that it can only be called once (because the 2nd time it's called the PDA will already be initialized). To illustrate how powerful enforced uniqueness is, consider a decentralized exchange program. In this program, anyone can create a new market for two assets. However, the program creators want liquidity to be concentrated so there should only be one market for every combination of two assets. This could be done without PDAs but would require a global account that saves all the different markets. Then upon market creation, the program would check whether the asset combination exists in the global market list. With PDAs this can be done in a much more straightforward way. Any market would simply be the PDA of the mint addresses of the two assets. The program would then check whether either of the two possible PDAs (because the market could've been created with the assets in reverse order) already exists.
+A subtle result of this hashmap structure is enforced uniqueness. When init is used with **seeds** and **bump**, it will always search for the **canonical bump**. This means that it can only be called once (because the 2nd time it's called the PDA will already be initialized). To illustrate how powerful enforced uniqueness is, consider a decentralized exchange program. In this program, anyone can create a new market for two assets. However, the program creators want liquidity to be concentrated so there should only be one market for every combination of two assets. This could be done without PDAs but would require a global account that saves all the different markets. Then upon market creation, the program would check whether the asset combination exists in the global market list. With PDAs this can be done in a much more straightforward way. Any market would simply be the PDA of the mint addresses of the two assets. The program would then check whether either of the two possible PDAs (because the market could've been created with the assets in reverse order) already exists.
 
 ### Conclusion
 
 This section serves as a brief recap of the different things you can do with PDAs.
 
-First, you can create hashmaps with them. We created a user stats PDA which was derived from the user address. This derivation linked the user address and the user stats account, allowing the latter to be easily found given the former. Hashmaps also result in enforced uniqueness which can be used in many different ways, e.g. for only allowing one market per two assets in a decentralized exchange.
+1. **Create hashmaps**: We created a user stats PDA which was derived from the user address. This derivation linked the user address and the user stats account, allowing the latter to be easily found given the former. Hashmaps also result in enforced uniqueness which can be used in many different ways, e.g. for only allowing one market per two assets in a decentralized exchange.
 
-Secondly, PDAs can be used to allow programs to sign CPIs. This means that programs can be given control over assets which they then manage according to the rules defined in their code.
+2. **Allow programs to sign CPIs**: This means that programs can be given control over assets which they then manage according to the rules defined in their code.
 
 You can even combine these two use cases and use a PDA that's used in an instruction as a state account to also sign a CPI.
 

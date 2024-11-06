@@ -1,5 +1,5 @@
 [package]
-name = "puppet-master"
+name = "puppet_master"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
