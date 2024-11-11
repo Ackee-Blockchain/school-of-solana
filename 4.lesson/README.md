@@ -121,7 +121,8 @@ mod puppet_master {
         // Create a CPI context with the program and accounts to call.
         let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
         // Perform the CPI call to set data on the puppet account.
-        let result = puppet::cpi::set_data(cpi_ctx, data)
+        let result = puppet::cpi::set_data(cpi_ctx, data)?;
+        Ok(())
     }
 }
 
