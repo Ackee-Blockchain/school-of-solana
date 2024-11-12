@@ -8,7 +8,7 @@ import * as token from '@solana/spl-token';
 
 describe("escrow_program", async () => {
 
-  const provider = anchor.AnchorProvider.local("http://127.0.0.1:8899");
+  const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
 
   const program = anchor.workspace.EscrowProgram as Program<EscrowProgram>;
