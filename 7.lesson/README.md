@@ -6,12 +6,11 @@ The repository contains the source code for both the Anchor program as well as t
 
 **The Anchor program is already deployed**, so you can interact with it by simply starting the frontend and connecting your hot wallet. Make sure your wallet is set to **devnet** mode.
 
+<img src=./solana_banks.png style="border-radius: 10px">
 
 >[!TIP]
 >### Try Deploying the Program Yourself!
 >You will need to update the program ID as demonstrated at the start of the lecture. The current program ID is already in use.
-
-<img src=./solana_banks.png style="border-radius: 10px">
 
 ## Setup
 
