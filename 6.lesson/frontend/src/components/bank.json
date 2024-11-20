@@ -1,13 +1,7 @@
-/**
- * Program IDL in camelCase format in order to be used in JS/TS.
- *
- * Note that this is only a type helper and is not the actual IDL. The original
- * IDL can be found at `target/idl/solanapdas.json`.
- */
-export type Solanapdas = {
-  "address": "7uAR6vf9t5VDhzzveTWTp72RT8Qbe8tVwdKfPozWSXBm",
+{
+  "address": "6X5dFH4CLG7YNdrTu7X2s4LmFnKpsPxN1X19L9w3C5eJ",
   "metadata": {
-    "name": "solanapdas",
+    "name": "bank",
     "version": "0.1.0",
     "spec": "0.1.0",
     "description": "Created with Anchor"
@@ -60,7 +54,7 @@ export type Solanapdas = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -94,7 +88,7 @@ export type Solanapdas = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -138,7 +132,7 @@ export type Solanapdas = {
   ],
   "accounts": [
     {
-      "name": "bank",
+      "name": "Bank",
       "discriminator": [
         142,
         49,
@@ -153,7 +147,7 @@ export type Solanapdas = {
   ],
   "types": [
     {
-      "name": "bank",
+      "name": "Bank",
       "type": {
         "kind": "struct",
         "fields": [
@@ -173,4 +167,4 @@ export type Solanapdas = {
       }
     }
   ]
-};
+}

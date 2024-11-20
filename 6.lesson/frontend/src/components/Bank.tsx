@@ -1,4 +1,3 @@
-// TODO: SignMessage
 import { verify } from '@noble/ed25519';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import bs58 from 'bs58';
@@ -6,8 +5,8 @@ import { FC, useCallback, useState } from 'react';
 import { notify } from "../utils/notifications";
 
 import { Program, AnchorProvider, web3, utils, BN, setProvider } from "@coral-xyz/anchor"
-import idl from "./solanapdas.json"
-import { Solanapdas } from "./solanapdas"
+import idl from "./bank.json"
+import { Bank } from "./bank"
 import { PublicKey } from '@solana/web3.js';
 
 const idl_string = JSON.stringify(idl)
@@ -28,7 +27,7 @@ export const Bank: FC = () => {
     const createBank = async () => {
         try {
             const anchProvider = getProvider()
-            const program = new Program<Solanapdas>(idl_object, anchProvider)
+            const program = new Program<Bank>(idl_object, anchProvider)
 
             await program.methods.create("New Bank").accounts({
                 user: anchProvider.publicKey
@@ -44,7 +43,7 @@ export const Bank: FC = () => {
     const getBanks = async () => {
         try {
             const anchProvider = getProvider()
-            const program = new Program<Solanapdas>(idl_object, anchProvider)
+            const program = new Program<Bank>(idl_object, anchProvider)
             Promise.all((await connection.getParsedProgramAccounts(programID)).map(async bank => ({
                 ...(await program.account.bank.fetch(bank.pubkey)),
                 pubkey: bank.pubkey
@@ -62,7 +61,7 @@ export const Bank: FC = () => {
     const depositBank = async (publicKey) => {
         try {
             const anchProvider = getProvider()
-            const program = new Program<Solanapdas>(idl_object, anchProvider)
+            const program = new Program<Bank>(idl_object, anchProvider)
 
             await program.methods.deposit(new BN(0.1 * web3.LAMPORTS_PER_SOL))
                 .accounts({

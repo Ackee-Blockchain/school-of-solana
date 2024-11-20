@@ -1,128 +1,430 @@
-# 7. Lecture - Front-end for Solana Programs
+# 7. Lecture - Security
 
-# Solana dApp Scaffold Next
+## Table of Contents
+- [7. Lecture - Security](#7-lecture---security)
+  - [Table of Contents](#table-of-contents)
+- [Common Solana Attack Vectors](#common-solana-attack-vectors)
+- [Solana Runtime Policy](#solana-runtime-policy)
+  - [Immutability](#immutability)
+  - [Data](#data)
+  - [Ownership](#ownership)
+  - [Zero Balance](#zero-balance)
+  - [Transaction](#transaction)
+  - [Data Allocation](#data-allocation)
+  - [Balance](#balance)
+  - [Rent](#rent)
+- [Best Security Practices](#best-security-practices)
+  - [Signer Authorization](#signer-authorization)
+    - [Plain Rust](#plain-rust)
+    - [Anchor](#anchor)
+  - [Owner Checks](#owner-checks)
+    - [Plain Rust](#plain-rust-1)
+    - [Anchor](#anchor-1)
+  - [Account Data Matching](#account-data-matching)
+    - [Plain Rust](#plain-rust-2)
+    - [Anchor](#anchor-2)
+  - [Reinitialization Attacks](#reinitialization-attacks)
+    - [Plain Rust](#plain-rust-3)
+    - [Anchor](#anchor-3)
+  - [Duplicate Mutable Accounts](#duplicate-mutable-accounts)
+    - [Plain Rust](#plain-rust-4)
+    - [Anchor](#anchor-4)
+  - [Type Cosplay](#type-cosplay)
+    - [Plain Rust](#plain-rust-5)
+    - [Anchor](#anchor-5)
+  - [Arbitrary CPI](#arbitrary-cpi)
+    - [Plain Rust](#plain-rust-6)
+    - [Anchor](#anchor-6)
+  - [Bump Seed Canonicalization](#bump-seed-canonicalization)
+    - [Plain Rust](#plain-rust-7)
+    - [Anchor](#anchor-7)
+  - [Closing Accounts and Revival Attacks](#closing-accounts-and-revival-attacks)
+    - [Plain Rust](#plain-rust-8)
+    - [Anchor](#anchor-8)
+    - [Need help?](#need-help)
+---
 
-The Solana dApp Scaffold repos are meant to house good starting scaffolds for ecosystem developers to get up and running quickly with a front end client UI that integrates several common features found in dApps with some basic usage examples. Wallet Integration. State management. Components examples. Notifications. Setup recommendations.
+# Common Solana Attack Vectors
 
-Responsive                     |  Desktop
-:-------------------------:|:-------------------------:
-![](scaffold-mobile.png)  |  ![](scaffold-desktop.png)
+> [!IMPORTANT]
+> For the Common Attack Vectors on Solana check the [Common Attack Vectors](https://github.com/Ackee-Blockchain/Solana-Auditors-Bootcamp/tree/master/Lesson-6) created for Solana Auditors Bootcamp.
 
-## Getting Started
+# Solana Runtime Policy
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Immutability
+> Executable accounts are fully immutable.
+> Executable is one-way (false->true) and only the account owner may set it.
 
-The responsive version for wallets and wallet adapter may not function or work as expected for mobile based on plugin and wallet compatibility. For more code examples and implementations please visit the [Solana Cookbook](https://solanacookbook.com/)
+## Data
 
-## Installation
+> Only the owner of an account may modify its data.
 
-```bash
-npm install
-# or
-yarn install
+> Accounts may only be assigned a new owner if their data is zeroed out.
+And only if the account is not executable. And only if the account is writable.
+
+## Ownership
+
+> Only the owner of an account may assign a new owner.
+
+## Zero Balance
+
+> Accounts with zero balance will be deleted at the end of transaction processing.
+
+> Temporary accounts with zero balance may be created during a transaction.
+
+## Transaction
+
+> Total balances on all the accounts are equal before and after the execution of a transaction.
+
+> After the transaction is executed, balances of read-only accounts must be equal to the balances before the transaction.
+
+> All instructions in the transaction are executed atomically. If one fails, all account modifications are discarded.
+
+## Data Allocation
+
+> Only the owner may change account size and data. And if the account is writable. And if the account is not executable.
+
+> Newly allocated account data is always zeroed out.
+
+## Balance
+
+> Only the owner of an account may subtract its lamports.
+
+> Any program account may add lamports to an account.
+
+## Rent
+
+> Rent fees are charged every epoch and are determined by account size.
+
+> Accounts with sufficient balance to cover 2 years of rent are exempt from fees.
+
+
+
+
+
+# Best Security Practices
+
+## Signer Authorization
+
+### Plain Rust
+
+Use `Signer Checks` to verify that specific accounts have signed a transaction. Without appropriate signer checks, accounts may be able to execute instructions they shouldn’t be authorized to perform.
+
+To implement a signer check in Rust, simply check that an account’s `is_signer` property is `true`
+
+```rust
+if !ctx.accounts.authority.is_signer {
+	return Err(ProgramError::MissingRequiredSignature.into());
+}
 ```
 
-## Build and Run
+### Anchor
+In Anchor, you can use the `Signer` account type in your account validation struct to have Anchor automatically perform a signer check on a given account
 
-Next, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
+```rust
+#[derive(Accounts)]
+pub struct UpdateUserData<'info> {
+    // performs signer check
+    pub user: Signer<'info>,
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Owner Checks
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Plain Rust
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Use `Owner Checks` to verify that accounts are owned by the expected program. Without appropriate owner checks, accounts owned by unexpected programs could be used in an instruction.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+To implement an owner check in Rust, simply check that an account’s owner matches an expected program ID
 
-## Features
-
-Each Scaffold will contain at least the following features:
-
-```
-Wallet Integration with Auto Connec / Refresh
-
-State Management
-
-Components: One or more components demonstrating state management
-
-Web3 Js: Examples of one or more uses of web3 js including a transaction with a connection provider
-
-Sample navigation and page changing to demonstate state
-
-Clean Simple Styling
-
-Notifications (optional): Example of using a notification system
-
+```rust
+if ctx.accounts.account.owner != ctx.program_id {
+    return Err(ProgramError::IncorrectProgramId.into());
+}
 ```
 
-A Solana Components Repo will be released in the near future to house a common components library.
+### Anchor
 
+Anchor program account types implement the `Owner` trait which allows the `Account<'info, T>` wrapper to automatically verify program ownership
 
-### Structure
-
-The scaffold project structure may vary based on the front end framework being utilized. The below is an example structure for the Next js Scaffold.
-
-```
-├── public : publically hosted files
-├── src : primary code folders and files
-│   ├── components : should house anything considered a resuable UI component
-│   ├── contexts` : any context considered reusable and useuful to many compoennts that can be passed down through a component tree
-│   ├── hooks` : any functions that let you 'hook' into react state or lifecycle features from function components
-│   ├── models` : any data structure that may be reused throughout the project
-│   ├── pages` : the pages that host meta data and the intended `View` for the page
-│   ├── stores` : stores used in state management
-│   ├── styles` : contain any global and reusable styles
-│   ├── utils` : any other functionality considered reusable code that can be referenced
-│   ├── views` : contains the actual views of the project that include the main content and components within
-style, package, configuration, and other project files
-
+```rust
+#[derive(Accounts)]
+pub struct UpdateUserData<'info> {
+    pub user: Signer<'info>,
+    // performs ownership check
+    pub user_data: Account<'info, UserData>,
+}
 ```
 
-## Contributing
+Anchor gives you the option to explicitly define the owner of an account if it should be anything other than the currently executing program
 
-Anyone is welcome to create an issue to build, discuss or request a new feature or update to the existing code base. Please keep in mind the following when submitting an issue. We consider merging high value features that may be utilized by the majority of scaffold users. If this is not a common feature or fix, consider adding it to the component library or cookbook. Please refer to the project's architecture and style when contributing.
+## Account Data Matching
 
-If submitting a feature, please reference the project structure shown above and try to follow the overall architecture and style presented in the existing scaffold.
+### Plain Rust
 
-### Committing
+Use `Data Validation checks` to verify that account data matches an expected value. Without appropriate data validation checks, unexpected accounts may be used in an instruction.
 
-To choose a task or make your own, do the following:
+To implement data validation checks in Rust, simply compare the data stored on an account to an expected value.
 
-1. [Add an issue](https://github.com/solana-dev-adv/solana-dapp-next/issues/new) for the task and assign it to yourself or comment on the issue
-2. Make a draft PR referencing the issue.
+```rust
+if ctx.accounts.user.key() != ctx.accounts.user_data.user {
+    return Err(ProgramError::InvalidAccountData.into());
+}
+```
 
-The general flow for making a contribution:
+### Anchor
 
-1. Fork the repo on GitHub
-2. Clone the project to your own machine
-3. Commit changes to your own branch
-4. Push your work back up to your fork
-5. Submit a Pull request so that we can review your changes
+In Anchor, you can use `constraint` to checks whether the given expression evaluates to true. Alternatively, you can use `has_one` to check that a target account field stored on the account matches the key of an account in the `Accounts` struct.
 
-**NOTE**: Be sure to merge the latest from "upstream" before making a
-pull request!
+```rust
+#[derive(Accounts)]
+pub struct UpdateUserData<'info> {
+    pub user: Signer<'info>,
+    #[account(constraint = user_data.authority = user.key())]
+    pub user_data: Account<'info, UserData>,
+}
+```
 
-You can find tasks on the [project board](https://github.com/solana-dev-adv/solana-dapp-next/projects/1)
-or create an issue and assign it to yourself.
+## Reinitialization Attacks
+
+### Plain Rust
+
+Use an `account discriminator or initialization flag` to check whether an account has already been initialized to prevent an account from being reinitialized and overriding existing account data.
+
+To prevent account reinitialization in plain Rust, initialize accounts with an `is_initialized` flag and check if it has already been set to true when initializing an account
+
+```rust
+if account.is_initialized {
+    return Err(ProgramError::AccountAlreadyInitialized.into());
+}
+```
+
+### Anchor
+
+To simplify this, use Anchor’s `init` constraint to create an account via a CPI to the system program and sets its discriminator
+
+```rust
+#[derive(Accounts)]
+pub struct UpdateUserData<'info> {
+    pub user: Signer<'info>,
+    // if account is already initialized init will return error
+    #[account(init)]
+    pub user_data: Account<'info, UserData>,
+}
+```
+
+## Duplicate Mutable Accounts
+
+### Plain Rust
+
+When an instruction requires two mutable accounts of the same type, an attacker can pass in the same account twice, causing the account to be mutated in unintended ways.
+
+To check for duplicate mutable accounts in Rust, simply compare the public keys of the two accounts and throw an error if they are the same.
+
+```rust
+if ctx.accounts.account_one.key() == ctx.accounts.account_two.key() {
+    return Err(ProgramError::InvalidArgument)
+}
+```
+
+### Anchor
+
+In Anchor, you can use constraint to add an explicit constraint to an account checking that it is not the same as another account.
+
+```rust
+#[derive(Accounts)]
+pub struct UpdateUserData<'info> {
+    pub user: Signer<'info>,
+    #[account(
+        mut,
+        constraint = user_data.key() != different_user_data.key()
+    )]
+    pub user_data: Account<'info, UserData>,
+    #[account(mut)]
+    pub different_user_data: Account<'info, UserData>,
+}
+```
+
+## Type Cosplay
+
+### Plain Rust
+
+Use discriminators to distinguish between different account types
+
+To implement a discriminator in Rust, include a field in the account struct to represent the account type
+
+```rust
+#[derive(BorshSerialize, BorshDeserialize)]
+pub struct User {
+    discriminant: AccountDiscriminant,
+    user: Pubkey,
+}
+
+#[derive(BorshSerialize, BorshDeserialize, PartialEq)]
+pub enum AccountDiscriminant {
+    User,
+    Admin,
+}
+```
+
+To implement a discriminator check in Rust, verify that the discriminator of the deserialized account data matches the expected value
+
+```rust
+if user.discriminant != AccountDiscriminant::User {
+    return Err(ProgramError::InvalidAccountData.into());
+}
+```
+
+### Anchor
+
+In Anchor, program account types automatically implement the `Discriminator` trait which creates an 8 byte unique identifier for a type
+
+Use Anchor’s `Account<'info, T>` type to automatically check the discriminator of the account when deserializing the account data
+
+```rust
+#[derive(Accounts)]
+pub struct UpdateUserData<'info> {
+    pub user: Signer<'info>,
+    // Account type automatically checks the Discriminator
+    // of the UserData Account
+    pub user_data: Account<'info, UserData>,
+}
+```
+
+## Arbitrary CPI
+
+### Plain Rust
+
+To generate a CPI, the target program must be passed into the invoking instruction as an account. This means that any target program could be passed into the instruction. Your program should check for incorrect or unexpected programs.
+
+Perform program checks in native programs by simply comparing the public key of the passed-in program to the program you expected.
+
+```rust
+pub fn cpi_secure(ctx: Context<Cpi>, amount: u64) -> Result<()> {
+    if &spl_token::ID != ctx.accounts.token_program.key {
+        return Err(ProgramError::IncorrectProgramId);
+    }
+    ...
+    // CPI logic goes here
+}
+```
+
+### Anchor
+
+If a program is written in Anchor, then it may have a publicly available CPI module. This makes invoking the program from another Anchor program simple and secure. The Anchor CPI module automatically checks that the address of the program passed in matches the address of the program stored in the module.
+
+The best practice while using Anchor is to always use `Program<'info, T>`, which will check that the account is executable and it is the given Program. For example:
+
+```rust
+use anchor_spl::token::Token;
+
+#[derive(Accounts)]
+pub struct InitializeExchange<'info> {
+    // ...
+    pub token_program: Program<'info, Token>,
+    // ...
+}
+```
+
+## Bump Seed Canonicalization
+
+### Plain Rust
+
+The [`create_program_address`](https://docs.rs/solana-program/latest/solana_program/pubkey/struct.Pubkey.html#method.create_program_address) function derives a PDA without searching for the `canonical bump`. This means there may be multiple valid bumps, all of which will produce different addresses.
+
+Using [`find_program_address`](https://docs.rs/solana-program/latest/solana_program/pubkey/struct.Pubkey.html#method.find_program_address) ensures that the highest valid bump, or canonical bump, is used for the derivation, thus creating a deterministic way to find an address given specific seeds.
+
+Recommended workflow:
+
+1. During Account Initialization derive the PDA using the [`find_program_address`](https://docs.rs/solana-program/latest/solana_program/pubkey/struct.Pubkey.html#method.find_program_address). This will produce PDA along with the canonical bump. The next step is to store the produced bump along with program data in an Account.
+2. When using the PDA with different instructions, use [`create_program_address`](https://docs.rs/solana-program/latest/solana_program/pubkey/struct.Pubkey.html#method.create_program_address) with the bump stored in the Account in step 1.
+
+### Anchor
+
+Upon initialization, you can use Anchor's `seeds` and `bump` constraint to ensure that PDA derivations in the account validation struct always use the `canonical bump`.
+
+Anchor allows you to specify a bump with the `bump = <some_bump>` constraint when verifying the address of a PDA.
+
+```rust
+pub fn _initialize_exchange(
+    ctx: Context<InitializeExchange>,
+) -> Result<()> {
+    // ...
+    // Store the produced canonical bump
+    let escrow = &mut ctx.accounts.escrow;
+    escrow.bump = ctx.bumps.escrow;
+    // ...
+    Ok(())
+}
+pub fn _update_exchange(
+    ctx: Context<UpdateExchange>,
+) -> Result<()> {
+    // Address correctness is ensured in the Context
+}
+
+pub struct InitializeExchange<'info> {
+    #[account(mut)]
+    pub side_a: Signer<'info>,
+    #[account(
+        init,
+        payer = side_a,
+        space = 8 + Escrow::LEN,
+        seeds = [b"escrow"], // specify desired seeds here
+        bump // produce canonical bump
+    )]
+    pub escrow: Account<'info, Escrow>,
+    // ...
+}
+pub struct UpdateExchange<'info> {
+    #[account(
+        mut,
+        seeds = [b"escrow"], // specify desired seeds here
+        escrow.bump // check the bump against the one already stored
+    )]
+    pub escrow: Account<'info, Escrow>,
+}
+```
+
+## Closing Accounts and Revival Attacks
+
+`Closing an account` improperly creates an opportunity for reinitialization/revival attacks.
+
+The Solana runtime `garbage collects accounts` when they are no longer rent exempt. Closing accounts involves transferring the lamports stored in the account for rent exemption to another account of your choosing.
+
+### Plain Rust
+The recommended workflow for manually closing an account is to use the Anchor's logic (i.e. check the close [Reference](https://github.com/coral-xyz/anchor/blob/460a16171a715671f77ead5629391c0466366c08/lang/src/common.rs#L6))
+
+### Anchor
+
+You can use the Anchor `#[account(close = <address_to_send_lamports>)]` constraint to securely close accounts. The close parameter will ([Close Reference](https://github.com/coral-xyz/anchor/blob/460a16171a715671f77ead5629391c0466366c08/lang/src/common.rs#L6)):
+
+1. `Move` lamports from the data Account to the `<address_to_send_lamports>`
+2. `Assign` ownership of the data Account back to the `System Program`
+3. `Realloc` the data size of the Account to 0.
 
 
-## Learn More Next Js
 
-To learn more about Next.js, take a look at the following resources:
+For example:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```rust
+#[derive(Accounts)]
+pub struct CancelExchange<'info> {
+    #[account(mut)]
+    pub side_a: Signer<'info>,
+    #[account(
+        mut,
+        close = side_a, // this is <address_to_send_lamports> (i.e. Rent receiver)
+        seeds = [b"escrow"],
+        escrow.bump
+    )]
+    pub escrow: Account<'info, Escrow>,
+}
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+-----
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+### Need help?
+If you have any questions feel free to reach out to us on [Discord](https://discord.gg/z3JVuZyFnp).
