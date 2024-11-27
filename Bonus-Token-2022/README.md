@@ -1,28 +1,27 @@
 # BONUS Lecture - Token 2022
 
+Token extensions are the next generation of the Solana Program Library Token standard. Over a dozen extensions provide advanced configurable functionality, specifically designed to meet the needs of businesses with compliance obligations.
+
 ## Table of Contents
-- [Token-2022](#token-2022)
-    - [Motivation](#motivation)
-    - [Mint Extensions](#mint-extensions)
-        - [Mint Close Authority](#mint-close-authority)
-        - [Transfer Fees](#transfer-fees)
-        - [Non-Transferable Tokens](#non-transferable-tokens)
-        - [Permanent Delegate](#permanent-delegate)
-        - [Transfer Hook](#transfer-hook)
-        - [Metadata Pointer](#metadata-pointer)
-        - [Metadata](#metadata)
-        - [Confidential Transfers](#confidential-transfers)
-    - [Token Extensions](#token-extensions)
-        - [Default Account State](#default-account-state)
-        - [Immutable Owner](#immutable-owner)
-        - [Required Memo on Transfer](#required-memo-on-transfer)
-        - [CPI Guard](#cpi-guard)
+<!-- no toc -->
+  - [Motivation](#motivation)
+  - [Mint Extensions](#mint-extensions)
+    - [Mint Close Authority](#mint-close-authority)
+    - [Transfer Fees](#transfer-fees)
+    - [Non-Transferable Tokens](#non-transferable-tokens)
+    - [Interest-Bearing Tokens](#interest-bearing-tokens)
+    - [Permanent Delegate](#permanent-delegate)
+    - [Transfer Hook](#transfer-hook)
+    - [Metadata Pointer](#metadata-pointer)
+    - [Metadata](#metadata)
+  - [Token Extensions](#token-extensions)
+    - [Default Account State](#default-account-state)
+    - [Immutable Owner](#immutable-owner)
+    - [Required Memo on Transfer](#required-memo-on-transfer)
+    - [CPI Guard](#cpi-guard)
+      - [Background](#background)
 
 ---
-
-# Token-2022
-
-Token extensions are the next generation of the Solana Program Library Token standard. Over a dozen extensions provide advanced configurable functionality, specifically designed to meet the needs of businesses with compliance obligations.
 
 ## Motivation
 
@@ -101,12 +100,6 @@ To avoid phony mints claiming to be stablecoins, however, a client must check th
 To facilitate token-metadata usage, Token-2022 allows a mint creator to include their token's metadata directly in the mint account.
 
 The metadata extension should work directly with the metadata-pointer extension. During mint creation, you should also add the metadata-pointer extension, pointed at the mint itself.
-
-### Confidential Transfers
-
-TBD
-
-[zk-token-protocol-paper](https://github.com/solana-labs/solana-program-library/tree/master/token/zk-token-protocol-paper)
 
 ## Token Extensions
 
