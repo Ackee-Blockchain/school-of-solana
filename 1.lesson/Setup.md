@@ -62,7 +62,7 @@ solana-install init 1.18.18
 Verify the installation:
 
 ```bash
-solana --versions
+solana --version
 ```
 
 ### 4. Install Node.js and Yarn
