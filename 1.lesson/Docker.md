@@ -1,68 +1,52 @@
 # Docker
 
-- [Docker Image x86](#docker-image-x86)
-- [Docker Image ARM](#docker-image-arm)
-
-## Docker Image x86
+We provide pre-built Docker images with preconfigured School of Solana environments for different architectures.
 
 > [!TIP]
 > **Install Docker**
-> You can check this guide [Install Docker Engine](https://docs.docker.com/engine/install/)
+> 
+> Follow this [installation guide](https://docs.docker.com/engine/install/).
 
+## Quick Start
 
-> [!IMPORTANT]
-> To use the pre-built Docker image for this course, you can pull the image from Docker Hub:
-> ```bash
-> docker pull ackeeblockchain/school-of-solana:latest
-> ```
-> Then run the following command. This will create new container.
-> ```bash
-> docker run -it --name school-of-solana -p 8899:8899 -p 9900:9900 -p 8000:8000 -p 8080:8080 ackeeblockchain/school-of-solana:latest
-> ```
-> Then visit the following url
->
->   http://localhost:8080/
->
-> When you want to continue work inside the Docker Image, use
-> ```bash
-> docker start school-of-solana
-> ```
-> and again visit the URL.
-> To stop the Image, use
-> ```bash
-> docker stop school-of-solana
-> ```
-> It is also possible to start/stop the Imagre from the Docker Desktop GUI.
+Choose the appropriate image for your system architecture:
 
-## Docker Image ARM
+### For x86/AMD64 Systems
+```bash
+docker pull ackeeblockchain/school-of-solana:latest
+```
 
-> [!TIP]
-> **Install Docker**
-> You can check this guide [Install Docker Engine](https://docs.docker.com/engine/install/)
+### For ARM Systems (Apple Silicon, ARM processors)
+```bash
+docker pull ackeeblockchain/school-of-solana-arm:latest
+```
 
+## Running the Container
 
 > [!IMPORTANT]
-> To use the pre-built Docker image for this course, you can pull the image from Docker Hub:
-> ```bash
-> docker pull ackeeblockchain/school-of-solana-arm:latest
-> ```
-> Then run the following command. This will create new container.
-> ```bash
-> docker run -it --name school-of-solana -p 8899:8899 -p 9900:9900 -p 8000:8000 -p 8080:8080 ackeeblockchain/school-of-solana-arm:latest
-> ```
-> Then visit the following url
->
->   http://localhost:8080/
->
-> When you want to continue work inside the Docker Image, use
-> ```bash
-> docker start school-of-solana
-> ```
-> and again visit the URL.
-> To stop the Image, use
-> ```bash
-> docker stop school-of-solana
-> ```
-> It is also possible to start/stop the Imagre from the Docker Desktop GUI.
+> Replace `<image-name>` with either:
+> - `ackeeblockchain/school-of-solana:latest` for x86/AMD64
+> - `ackeeblockchain/school-of-solana-arm:latest` for ARM
 
------
+**Create and run a new container:**
+```bash
+docker run -it --name school-of-solana -p 8899:8899 -p 9900:9900 -p 8000:8000 -p 8080:8080 <image-name>
+```
+
+**Access the development environment:**
+Visit http://localhost:8080/
+
+## Container Management
+
+**Start an existing container:**
+```bash
+docker start school-of-solana
+```
+
+**Stop the container:**
+```bash
+docker stop school-of-solana
+```
+
+> [!NOTE]
+> You can also manage containers using Docker Desktop's GUI interface.

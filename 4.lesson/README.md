@@ -206,6 +206,7 @@ describe('puppet', () => {
 
 CPIs extend the privileges of the caller to the callee. The puppet account was passed as a mutable account to the puppet_master but it was still mutable in the puppet program as well (otherwise the `assert` in the test would've failed). The same applies to signatures.
 
+> [!WARNING]
 > Privilege extension is convenient but also dangerous. If a CPI is unintentionally made to a malicious program, this program has the same privileges as the caller. Anchor protects you from CPIs to malicious programs with two measures. First, the `Program<'info, T>` type checks that the given account is the expected program `T`. Should you ever forget to use the `Program` type, the automatically generated cpi function (in the previous example this was `puppet::cpi::set_data`) also checks that the cpi_program argument equals the expected program.
 
 ### Reloading an Account
@@ -317,7 +318,7 @@ fn find_pda(seeds, program_id) {
 ```
 
 
-It is technically possible that no bump is found within 256 tries but this probability is negligible. If you're interested in the exact calculation of a PDA, check out the [solana_program source code](https://docs.rs/solana-pubkey/2.1.0/solana_pubkey/struct.Pubkey.html#method.find_program_address).
+It is technically possible that no bump is found within 256 tries but this probability is negligible. If you're interested in the exact calculation of a PDA, check out the [solana_program source code](https://docs.rs/solana-pubkey/latest/solana_pubkey/struct.Pubkey.html#method.find_program_address).
 
 The first bump that results in a PDA is commonly called the "**canonical bump**". Other bumps may also result in a PDA but it's recommended to only use the canonical bump to avoid confusion.
 

@@ -1,30 +1,26 @@
 # 3. Lecture - Solana programming model I
 
 ## Table of Contents
+<!-- no toc -->
 - [Solana Program Model](#solana-program-model)
   - [Accounts](#accounts)
   - [Program types](#program-types)
   - [Entrypoint](#entrypoint)
 - [Anchor Framework](#anchor-framework)
-    - [High-level Overview](#high-level-overview)
-    - [The Accounts Struct](#the-accounts-struct)
-        - [Types](#types)
-        - [The Account Type](#the-account-type)
-        - [Constraints](#constraints)
-        - [Safety checks](#safety-checks)
-    - [The Program Module](#the-program-module)
-        - [Context](#context)
-        - [Instruction Data](#instruction-data)
-    - [Errors](#errors)
-        - [Anchor Internal Errors](#anchor-internal-errors)
-        - [Custom Errors](#custom-errors)
+  - [High-level Overview](#high-level-overview)
+  - [The Accounts Struct](#the-accounts-struct)
+    - [Types](#types)
+    - [The Account Type](#the-account-type)
+    - [Constraints](#constraints)
+    - [Safety checks](#safety-checks)
+  - [The Program Module](#the-program-module)
+    - [Context](#context)
+    - [Instruction Data](#instruction-data)
+  - [Errors](#errors)
+    - [Anchor Intrernal Errors](#anchor-intrernal-errors)
+    - [Custom Errors](#custom-errors)
 ---
 # Solana Program Model
-
-> [!TIP]
-> Relevant resources:
-> - [The Solana Programming Model by Helius](https://www.helius.dev/blog/the-solana-programming-model-an-introduction-to-developing-on-solana#)
-> - [Solana Docs on Program entrypoint](https://solana.com/docs/programs/lang-rust#program-entrypoint)
 
 ## Accounts
 
@@ -64,7 +60,7 @@ Upon the `entrypoint` entry, the input byte array is deserialized into **`progra
 # Anchor Framework
 
 ## High-level Overview
-An Anchor program consists of three parts. The **program module**, the **Accounts struct** which is marked with `#[derive(Accounts)]`, and the **`declare_id` macro**. The program module is where you write your business logic. The Accounts struct is where you validate accounts. The `declare_id` macro creates an ID field that stores the address of your program. Anchor uses this hardcoded ID for security checks and it also allows other crates to access your program's address.
+An Anchor program consists of three parts. The **program module**, the **Accounts struct** which is marked with `#[derive(Accounts)]`, and the `declare_id` macro. The program module is where you write your business logic. The Accounts struct is where you validate accounts. The `declare_id` macro creates an ID field that stores the address of your program. Anchor uses this hardcoded ID for security checks and it also allows other crates to access your program's address.
 
 When you start up a new Anchor project, you'll see the following:
 
@@ -252,9 +248,9 @@ mod hello_anchor {
 ### Context
 
 > [!TIP]
-> [Context Reference](https://docs.rs/anchor-lang/latest/anchor_lang/context/index.html)
+> [Context Reference](https://docs.rs/anchor-lang/latest/anchor_lang/context/struct.Context.html)
 
-Each endpoint function takes a `Context` type as its first argument. Through this context argument it can access the `accounts` (ctx.accounts), the `program id` (ctx.program_id) of the executing program, and the `remaining accounts` (ctx.remaining_accounts). 
+Each endpoint function takes a `Context` type as its first argument. Through this context argument it can access the `accounts` (ctx.accounts), the `program id` (ctx.program_id) of the executing program, `bumps` of the included accounts and the `remaining accounts` (ctx.remaining_accounts). 
 The `remaining_accounts` is a vector that contains all accounts that were passed into the instruction but are not declared in the `Accounts` struct. This is useful when you want your function to handle a variable amount of accounts, e.g. when initializing a game with a variable number of players.
 
 
@@ -341,7 +337,7 @@ You can add errors that are unique to your program by using the `error_code` att
 
 Simply add it to an enum with a name of your choice. You can then use the variants of the enum as errors in your program. Additionally, you can add a message attribute to the individual variants. Clients will then display this error message if the error occurs. Custom Error code numbers start at the [custom error offset](https://docs.rs/anchor-lang/latest/anchor_lang/error/constant.ERROR_CODE_OFFSET.html).
 
-To actually throw an error use the `err!` or the `error!` macro. These add the file and line information to the error that is then logged by anchor.
+To actually throw an error use the `err!` macro. These add the file and line information to the error that is then logged by anchor.
 
 ```rust
 #[program]
@@ -394,6 +390,15 @@ pub enum MyError {
 > [!TIP]
 > There are a couple of `require!` macros to choose from ([search for require in the docs](https://docs.rs/anchor-lang/latest/anchor_lang/?search=require)). When comparing public keys, it's important to use the keys variants of the require statements like `require_keys_eq` instead of `require_eq` because comparing public keys with `require_eq` is very expensive.
 
+---
+
+# Additional Resources
+
+> [!TIP]
+> Check out additional resources for more information:
+> - [The Solana Programming Model by Helius](https://www.helius.dev/blog/the-solana-programming-model-an-introduction-to-developing-on-solana#)
+> - [Solana Documentation](https://solana.com/docs)
+> - [Anchor Documentation](https://www.anchor-lang.com/docs)
 
 -----
 

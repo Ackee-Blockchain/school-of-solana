@@ -20,13 +20,20 @@ pub struct Initialize<'info> {
     #[account(
         init,
         payer = signer,
-        space = 50,
+        /// TIP: 
+        /// 
+        /// space = account discriminator + HelloWorldAccount::INIT_SPACE
+        /// 
+        /// Use InitSpace macro to calculate the space instead of doing it manually
+        space = 8 + HelloWorldAccount::INIT_SPACE,
     )]
     pub hello_world_account: Account<'info, HelloWorldAccount>,
     pub system_program: Program<'info, System>,
 }
 
 #[account]
+#[derive(InitSpace)]
 pub struct HelloWorldAccount {
+    #[max_len(32)]
     pub greeting: String,
 }
