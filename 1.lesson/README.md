@@ -1,20 +1,21 @@
-
 # 1. Lecture - Introduction to Solana and Blockchain
 
-In order not to waste time on our first lecture, please **prepare/install some stuff** in advance. 👇
+To make the most of our first lecture, please **set up your development environment** in advance.
 
 ## Table of Contents
+<!-- no toc -->
 - [Dev Setup](#dev-setup)
 - [Solana Handbook](#solana-handbook)
 - [Command cheatsheet](#command-cheatsheet)
-    - [Solana commands](#solana-cli-commands)
-    - [Anchor commands](#anchor-commands)
+  - [Solana CLI](#solana-cli-commands)
+  - [Anchor](#anchor-commands)
 
 
 ## Dev Setup
 
-> [!TIP]
-> For step by step guide check [Manual Setup](./Setup.md)
+>[!TIP]
+>
+> Checkout [Manual Setup](./Setup.md) section for step by step guide.
 
 [WSL]: https://learn.microsoft.com/en-us/windows/wsl/install
 [Rust]: https://www.rust-lang.org/tools/install
@@ -22,28 +23,28 @@ In order not to waste time on our first lecture, please **prepare/install some s
 [Anchor]: https://www.anchor-lang.com/docs/installation
 [VSCode]: https://code.visualstudio.com/
 [RustAnalyzer]: https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
-[Docker Image]: https://docs.docker.com/engine/install/
 
 
-| Setup | Description | Version | How to Install |
+| Setup | Version | Installation | Note
 |- | - | - | - |
-| Windows subsystem for Linux(WSL) | optional but highly recommended | 2.0 | [Instructions][WSL] |
-| Rust | - | 1.79.0 | [Instructions][Rust] |
-| Solana tool suite | | 1.18.18 | [Instructions][Solana] |
-| Anchor framework | - | 0.30.1 | [Instructions][Anchor] |
-| VSCode | chose your own preferred IDE | - | [Instructions][VSCode] |
-| RustAnalyzer | optional extension for VSCode | - | [Instructions][RustAnalyzer] |
-| Docker | [Install Docker][Docker Image] | - | [Instructions](./Docker.md) |
+| WSL | 2.0 | [Guide][WSL] | Highly recomended
+| Rust |  1.86.0 | [Guide][Rust] |
+| Solana | 2.2.12 | [Guide][Solana] |
+| Anchor |  0.31.1 | [Guide][Anchor] |
+| VS Code | | [Guide][VSCode] | Or any other favorite IDE
+| Rust Analyzer |  | [Guide][RustAnalyzer] | Highly recommended
+| Docker | |  [Guide](./Docker.md) | To use pre-configured docker image
 
 
 ## Solana Handbook
 
-- Introduction to Solana by Ackee Blockchain
-[Solana Handbook](https://ackeeblockchain.com/solana-handbook.pdf)
+This is the main learning material for the first lecture. It is our introductory material to blockchain and Solana. Getting comfortable with it will help you pass the first task!
+
+[**Solana Handbook**](https://ackee.xyz/solana/book/latest/)
 
 ## Command cheatsheet
 
-### Solana CLI commands
+### Solana CLI
 
 - #### Get current config
 
@@ -69,14 +70,17 @@ In order not to waste time on our first lecture, please **prepare/install some s
     solana-keygen new -o test.json
     ```
 - #### Airdrop
-    > As you may guess, Airdrop will only work on Devnet, Testnet or Localhost. No you cannot airdrop SOL on Mainnet!!
+    > [!NOTE]
+    > Airdrop only works on **devnet**, **testnet** and **localhost**.
     ```bash
     solana airdrop 5
     ```
-    > You can also optionally specify the destination address of the airdrop
+    > [!TIP]
+    > You can also optionally specify the destination address of the airdrop.
     ```bash
     solana airdrop 5 <YOUR_PUBKEY>
     ```
+    > [!TIP]
     > You can also use the [Solana Faucet](https://faucet.solana.com/) to get some SOL.
 
 - #### Get PubKey from Keypair
@@ -84,7 +88,8 @@ In order not to waste time on our first lecture, please **prepare/install some s
     solana-keygen pubkey ~/my-solana-wallet/my-keypair.json
     ```
 - #### Run Solana test validator
-    > In **most cases (99%)** you **DO NOT NEED TO** start the local validator by yourself. **Down below** you can find the **Anchor commands** which will handle everything for you.
+    > [!NOTE]
+    > In **most** cases you **DO NOT** need to start the local validator by yourself. Down below you can find the **Anchor commands** which will handle everything for you.
     ```bash
     solana-test-validator
     ```
@@ -93,7 +98,8 @@ In order not to waste time on our first lecture, please **prepare/install some s
     solana logs
     ```
 
-### Anchor commands
+### Anchor
+
 - #### Initialize new project
     ```bash
     anchor init <your_project_name>
@@ -107,16 +113,17 @@ In order not to waste time on our first lecture, please **prepare/install some s
     anchor test
     ```
 - #### Test the project (less preferred)
-    In separate window, call:
+    In a separate terminal tab, call:
     ```bash
     solana-test-validator
     ```
-    Within the anchor project directory
+    Within the anchor project directory:
+
     - Build the project
         ```bash
         anchor build
         ```
-    - Run Tests without starting the local validator (as you started it manually in the step above)
+    - Run tests without starting the local validator (started it manually in the step above)
         ```bash
         anchor test --skip-local-validator
         ```

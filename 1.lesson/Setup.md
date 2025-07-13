@@ -4,14 +4,15 @@
 This guide will walk you through setting up your environment for the School of Solana if you prefer not to use the provided Docker image. Follow the steps below to install all the necessary tools and dependencies.
 
 ### System Requirements
-- WSL 2.0 with Ubuntu 20.04 distro or
-- standalone Ubuntu 20.04
+Use WSL 2.0 with Ubuntu 22.04 distro or standalone Ubuntu 22.04.
+
 
 > [!TIP]
 > **Install WSL 2.0**
-> You can check this guide [Install WSL 2.0](https://learn.microsoft.com/en-us/windows/wsl/install)
+> 
+> Follow this [installation guide](https://learn.microsoft.com/en-us/windows/wsl/install).
 
-
+## Setup
 
 ### 1.  Install System Dependencies
 
@@ -32,13 +33,13 @@ sudo apt-get install -y \
 
 ### 2. Install Rust
 
-Install Rust using the [Install Rust](https://www.rust-lang.org/tools/install)
+[Rust installation guide](https://www.rust-lang.org/tools/install)
 
 Set the default version:
 
 ```bash
-rustup install 1.79.0
-rustup default 1.79.0
+rustup install 1.86.0
+rustup default 1.86.0
 ```
 
 Verify the installation:
@@ -51,18 +52,18 @@ cargo --version
 
 ### 3. Install Solana CLI
 
-Install Solana CLI using the [Install the Solana CLI](https://docs.solanalabs.com/cli/install)
+[Solana installation guide](https://docs.anza.xyz/cli/install/)
 
 Set the default version:
 
 ```bash
-solana-install init 1.18.18
+agave-install init 2.2.12
 ```
 
 Verify the installation:
 
 ```bash
-solana --versions
+solana --version
 ```
 
 ### 4. Install Node.js and Yarn
@@ -73,15 +74,14 @@ Install Node.js and Yarn for managing JavaScript dependencies:
 npm install --global yarn
 ```
 
-
 ### 5. Install Anchor CLI
 
-Install Anchor Framework using the [Anchor Installation](https://www.anchor-lang.com/docs/installation)
+[Anchor installation guide](https://www.anchor-lang.com/docs/installation)
 
 Set the default version:
 ```bash
-avm install 0.30.1
-avm use 0.30.1
+avm install 0.31.1
+avm use 0.31.1
 ```
 
 Verify the installation:

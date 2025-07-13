@@ -40,7 +40,7 @@ The big difference from C and C++ is that Rust is *safe by default.* All memory
 
 Rust is a statically typed language. Every value in Rust is of a certain data type. The compiler can automatically infer data type of the variable based on the value assigned to it.
 
-Use the **_let_** keyword to declare a variable.
+Use the `let` keyword to declare a variable, or `const` for constants.
 
 ## Variables
 
@@ -48,17 +48,17 @@ The data type is optional while declaring a variable in Rust. The data type is i
 
 ## Mutable
 
-Variables are immutable by default. Prefix the variable name with **mut** keyword to make it mutable. The value of a mutable variable can be changed.
+Variables are **immutable by default**. Prefix the variable name with `mut` keyword to make it mutable. The value of a mutable variable can be changed.
 
 ## Shadowing
 
-Rust allows programmers to declare variables with the same name. In such a case, the new variable overrides the previous variable.
+Rust allows programmers to declare variables with the same name. In such a case, the new variable **overrides** the previous variable.
 
 ## Structure
 
 Arrays are used to represent a homogeneous collection of values. Similarly, a structure is another user defined data type available in Rust that allows us to combine data items of different types, including another structure. A structure defines data as a key-value pair.
 
-The *struct* keyword is used to declare a structure. Since structures are statically typed, every field in the structure must be associated with a data type. The naming rules and conventions for a structure is like that of a variable.
+The `struct` keyword is used to declare a structure. Since structures are statically typed, **every field in the structure must be associated with a data type**.
 
 ```rust
 struct Person {
@@ -127,7 +127,7 @@ We can define functions to have parameters, which are special variables that are
 (x: i32)
 ```
 
-Functions can return values to the code that calls them. We don’t name return values, but we must declare their type after an arrow (`->`). You can return early from a function by using the `return` keyword and specifying a value, but most functions return the last expression implicitly. The return type of `plus_one` is `i32`.
+Functions can return values. We don’t name return values, but we must declare their type after an arrow (`->`). You can return early from a function by using the `return` keyword and specifying a value, but most functions return the last expression implicitly. The return type of `plus_one` is `i32`.
 
 ```rust
 -> i32
@@ -167,7 +167,7 @@ _Ownership_
 
 Rust uses a third approach: memory is managed through a system of ownership with a set of rules that the compiler checks. If any of the rules are violated, the program won’t compile. None of the features of ownership will slow down your program while it’s running.
 
-[Ownership Rules](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#ownership-rules)
+[**Ownership Rules**](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#ownership-rules)
 
 First, let’s take a look at the ownership rules. Keep these rules in mind as we work through the examples that illustrate them:
 
@@ -177,7 +177,7 @@ First, let’s take a look at the ownership rules. Keep these rules in mind as w
 
 ## Borrowing
 
-When a function transfers its control over a variable/value to another function temporarily, for a while, it is called borrowing. This is achieved by passing a reference to the variable **_(& var_name)_** rather than passing the variable/value itself to the function.
+When a function transfers its control over a variable/value to another function temporarily, for a while, it is called borrowing. This is achieved by passing a reference to the variable (eg. `& var_name`) rather than passing the variable/value itself to the function.
 
 ### The Rules of References
 
@@ -200,7 +200,6 @@ impl Drop for Handle {
 
 fn main() {
     let handle_0 = Handle(0);
-    // TODO change handle_2 to _
     let handle_2 = create_handle();
     Handle(3);
 }

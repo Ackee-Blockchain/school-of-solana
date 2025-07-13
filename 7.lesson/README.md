@@ -61,12 +61,6 @@ Only the owner of an account may subtract its lamports.
 
 Any program account may add lamports to an account.
 
-### Rent
-
-Rent fees are charged every epoch and are determined by account size.
-
-Accounts with sufficient balance to cover 2 years of rent are exempt from fees.
-
 -----
 
 

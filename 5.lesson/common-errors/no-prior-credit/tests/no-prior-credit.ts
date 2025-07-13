@@ -18,9 +18,9 @@ describe("no-prior-credit", () => {
     // await airdrop(connection, user.publicKey);
 
     // Retrieve and log the user's account balance with `getBalance`.
-    // console.log(
-    //   "User balance = " + (await connection.getBalance(user.publicKey))
-    // );
+    console.log(
+      "User balance = " + (await connection.getBalance(user.publicKey))
+    );
   });
 
   it("Is initialized!", async () => {
