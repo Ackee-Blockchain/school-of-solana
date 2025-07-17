@@ -18,7 +18,6 @@ describe("hello_world", () => {
       .accounts({
         signer: signer.publicKey,
         helloWorldAccount: hellog_world.publicKey,
-        systemProgram: anchor.web3.SystemProgram.programId,
       })
       .signers([signer, hellog_world])
       .rpc();
