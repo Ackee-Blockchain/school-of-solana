@@ -17,14 +17,11 @@ pub mod hello_world {
 pub struct Initialize<'info> {
     #[account(mut)]
     pub signer: Signer<'info>,
+    /// TIP: space = account discriminator + HelloWorldAccount::INIT_SPACE
+    /// Use InitSpace macro to calculate the space instead of doing it manually
     #[account(
         init,
         payer = signer,
-        /// TIP: 
-        /// 
-        /// space = account discriminator + HelloWorldAccount::INIT_SPACE
-        /// 
-        /// Use InitSpace macro to calculate the space instead of doing it manually
         space = 8 + HelloWorldAccount::INIT_SPACE,
     )]
     pub hello_world_account: Account<'info, HelloWorldAccount>,
