@@ -11,17 +11,23 @@ describe("hello_world", () => {
   const hellog_world = anchor.web3.Keypair.generate();
 
   it("Greetings Solana!", async () => {
-    await airdrop(program.provider.connection, signer.publicKey)
+    await airdrop(program.provider.connection, signer.publicKey);
 
-    const tx = await program.methods.initialize().accounts({
-      signer: signer.publicKey,
-      helloWorldAccount: hellog_world.publicKey,
-      systemProgram: anchor.web3.SystemProgram.programId,
-    }).signers([signer, hellog_world]).rpc();
+    const tx = await program.methods
+      .initialize()
+      .accounts({
+        signer: signer.publicKey,
+        helloWorldAccount: hellog_world.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      })
+      .signers([signer, hellog_world])
+      .rpc();
   });
 });
 
-
 async function airdrop(connection: any, address: any, amount = 1000000000) {
-  await connection.confirmTransaction(await connection.requestAirdrop(address, amount), "confirmed");
+  await connection.confirmTransaction(
+    await connection.requestAirdrop(address, amount),
+    "confirmed"
+  );
 }
