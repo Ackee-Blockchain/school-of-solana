@@ -1,17 +1,18 @@
 [toolchain]
+package_manager = "yarn"
 
 [features]
-resolution = false
+resolution = true
 skip-lint = false
 
 [programs.localnet]
-lesson_example = "E49Vsg4wbsyYoUJPFrYRbnrMqDpixuqu2xpzD5JDMkF9"
+token_example = "ApjAG3oR2KFBdF5ZargvmDaS5UV3wZJMw8UGFtb6ij4m"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
