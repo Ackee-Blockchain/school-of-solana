@@ -48,5 +48,10 @@ docker start school-of-solana
 docker stop school-of-solana
 ```
 
+**Inspect Official Containers:** 
+
+- [Official Docker Hub Images](https://hub.docker.com/u/ackeeblockchain) - If your curious, and want to inspect the official images, you can find them here.
+
+
 > [!NOTE]
 > You can also manage containers using Docker Desktop's GUI interface.
