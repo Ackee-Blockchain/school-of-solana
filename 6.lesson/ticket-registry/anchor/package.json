@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
+    "jest": "^30.0.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.9.2"
+  }
+}
