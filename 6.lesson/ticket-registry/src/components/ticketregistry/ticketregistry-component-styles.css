@@ -1,0 +1,74 @@
+.ticket-registry>*+* {
+  margin-top: 1.5rem;
+}
+
+.ticket-registry>div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticket-registry h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+
+/* Events section - mt-4 */
+.events-section {
+  margin-top: 1rem;
+}
+
+.events-section>div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.events-section h3 {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.events-section>div:nth-child(2)>*+* {
+  margin-top: 1rem;
+}
+
+.events-section>div:nth-child(2)>div {
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.events-section h4 {
+  font-weight: 600;
+}
+
+.events-section p {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4b5563;
+}
+
+.events-section>div:nth-child(2)>div>div:last-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.events-section span {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.events-section>div:nth-child(2)>div>div:last-child>div:last-child {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.create-event-modal>*+* {
+  margin-top: 1rem;
+}
