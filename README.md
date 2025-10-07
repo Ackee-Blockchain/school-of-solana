@@ -17,12 +17,11 @@ Do you want to learn Rust and be able to code, debug, and review **Solana** prog
 
 [**Sign up right here!**](https://ackee.xyz/school-of-solana)
 
-### School of Solana Season 7
+### School of Solana Season 8
 
 The course is **completely free**, spans **9 weeks**, and is conducted online in English!
 
-- **Start date**: July 16, 2025
-- **Application deadline**: TODO
+- **Start date**: October 8, 2025
 - **Certification**: Graduates receive NFT certification.
 
 
