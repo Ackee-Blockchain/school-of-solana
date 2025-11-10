@@ -31,7 +31,7 @@ pub struct Initialize<'info> {
     #[account(init,
         space = 8 + 32 + 1,
         payer = user,
-        seeds = [b"data1", b"data2"],
+        seeds = [b"data1", b"data2", user.key().as_ref()],
         bump
     )]
     data: Account<'info, MyData>,
@@ -41,8 +41,8 @@ pub struct Initialize<'info> {
 
 #[account]
 pub struct MyData {
-    authority: Pubkey,
-    counter: u8,
+    pub authority: Pubkey,
+    pub counter: u8,
 }
 
 #[error_code]
@@ -51,20 +51,6 @@ pub enum MyError {
     InvalidInstructionData,
 }
 
-fn math_function(count: u8) -> Option<u8> {
+pub fn math_function(count: u8) -> Option<u8> {
     10u8.checked_sub(count)
-}
-
-// Unit tests
-#[cfg(test)]
-mod tests {
-    // Note this useful idiom: importing names from outer (for mod tests) scope.
-    use super::*;
-
-    // It is possible to test even private functions.
-    #[test]
-    fn test_math_function() {
-        assert_eq!(math_function(2), Some(8));
-        assert_eq!(math_function(11), None);
-    }
 }

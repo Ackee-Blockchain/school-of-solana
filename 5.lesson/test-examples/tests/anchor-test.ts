@@ -7,11 +7,10 @@ import { assert } from "chai";
 describe("test-examples", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
   let connection = anchor.getProvider().connection;
-
   const program = anchor.workspace.TestExamples as Program<TestExamples>;
   const user = Keypair.generate();
   const data = PublicKey.findProgramAddressSync(
-    [Buffer.from("data1"), Buffer.from("data2")],
+    [Buffer.from("data1"), Buffer.from("data2"), user.publicKey.toBuffer()],
     program.programId
   )[0];
 

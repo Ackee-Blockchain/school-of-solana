@@ -10,6 +10,12 @@ This week, we are taking a look at a few common errors you’re likely to run in
 - [Types of Tests](#types-of-tests)
   - [Units Tests](#units-tests)
   - [Integration Tests](#integration-tests)
+  - [End-to-End Tests](#end-to-end-tests)
+- [Testing Solana Programs](#testing-solana-programs)
+  - [Why Testing Matters](#why-testing-matters)
+  - [Tooling Overview](#tooling-overview)
+  - [Comparison](#comparison)
+  - [Examples](#examples)
 - [Common Errors](#common-errors)
   - [Signer Verification Failed](#signer-verification-failed)
   - [No Prior Credit](#no-prior-credit)
@@ -23,13 +29,59 @@ This week, we are taking a look at a few common errors you’re likely to run in
 ## Types of Tests
 You should always aim for high test coverage. This includes testing both the "happy path" (successful cases) and "unhappy path" (error cases).
 
+> [!Info]
+> Examples of code and guide how to run each test you can find inside `test-examples` folder.
+
 ### Units Tests
 
-Unit tests are small tests that focus on one individual component or function at a time. They isolate logic to verify that each part works as expected under different conditions.
+Unit testing is the foundational layer of any robust software testing strategy, ensuring that individual components of a program function correctly in isolation. In the context of Solana smart contracts, or on-chain programs, unit tests are designed to validate small pieces of logic, such as a single instruction handler or helper function, without requiring deployment to a cluster or any interaction with other accounts or programs. The goal is to confirm that the internal logic behaves as expected under controlled conditions before it is combined into larger workflows or integrated with the blockchain runtime.
 
-Unit tests are useful for:
-- Checking boundary conditions, such as maximum or minimum values.
-- Verifying basic functionality of individual instructions.
+The primary advantage of unit tests lies in their speed. Unlike integration tests that rely on runtime simulation or RPC calls, unit tests run entirely in memory, without the overhead of serialization, network communication, or account state initialization. They execute as regular Rust functions, often completing in milliseconds. Because they operate off-chain and bypass the Solana runtime, unit tests are deterministic and require no external setup, which makes them ideal for continuous integration environments and early development phases.
+
+#### Rust’s Native Testing Framework
+
+The simplest and fastest way to perform unit tests on Solana programs is through Rust’s standard testing framework, built directly into the language. Using this approach, developers write tests in the same crate as their program logic, typically under the tests module, and execute them using the cargo test command.
+This method is particularly useful for:
+- testing pure functions, 
+- hash computations, 
+- access control checks, 
+- arithmetic operations that do not depend on Solana accounts or external contexts
+
+Because it bypasses all blockchain-related abstractions, it achieves near-instant execution. However, the trade-off is realism: such tests cannot simulate account data, rent-exempt balances, or instruction execution. They are best suited for early logic validation before the program interacts with the Solana runtime.
+
+Below you can see the example of simple unit test.
+
+Imagine that we have the `math_function`, which safely subtracts `count` from 10 and returns the result as an `Option<u8>`.
+```rust
+    pub fn math_function(count: u8) -> Option<u8> {
+        10u8.checked_sub(count)
+    }
+```
+
+Then we will call `math_function` inside the instruction:
+```rust
+    ...
+    pub fn initialize(ctx: Context<Initialize>, count: u8) -> Result<()> {
+        let data = &mut ctx.accounts.data;
+
+        data.authority = ctx.accounts.user.key();
+        require!(count <= 10, MyError::InvalidInstructionData);
+
+        // Never panics due to require macro above.
+        data.counter = math_function(count).unwrap();
+
+        msg!("Data.counter = {}", data.counter);
+        msg!("Data pubkey = {}", data.key().to_string());
+        msg!("User pubkey = {}", data.authority.key().to_string());
+
+        Ok(())
+    }
+    ...
+```
+
+We need to test `math_function(...)` works correctly without on-chain integration, we expect:
+- If count is less than or equal to 10, it returns Some(10 - count).
+- If count is greater than 10, it returns None.
 
 Here is an example of a simple unit test:
 ```rust
@@ -43,17 +95,107 @@ mod tests {
         assert_eq!(math_function(2), Some(8));
         // Check that the function returns `None` when input exceeds bounds
         assert_eq!(math_function(11), None);
+        // Check that the function returns `Some(0)` when input == bounds
+        assert_eq!(math_function(10), Some(0));
     }
 }
 ```
 
 ### Integration Tests
 
-Integration tests check whether different parts of a program work together as expected. They simulate real-world scenarios by testing more complex transactions and interactions between accounts.
+While unit tests validate isolated logic, integration tests focus on verifying that multiple parts of a Solana program work together correctly inside a simulated blockchain environment. They ensure that interactions between instructions, accounts, and programs behave as expected under realistic runtime conditions. This type of testing is especially valuable in Solana development because most program logic depends on the state transitions of on-chain accounts and their interactions through cross-program invocations (CPIs). In short, integration tests bridge the gap between internal correctness and blockchain-level functionality.
 
-Integration tests are useful for:
-- Confirming program behavior across multiple accounts and instructions.
-- Testing interactions with external programs or system accounts.
+The key strength of integration tests lies in their realism. Unlike unit tests that run purely off-chain, integration tests execute the actual Solana runtime in a controlled, local environment. Each instruction is processed as it would be on-chain, complete with account validation, rent checks, signer verification, and system program calls. This allows developers to confirm that PDAs are derived correctly, instructions modify state as intended, and errors are raised in the right scenarios. Such realism inevitably comes at a cost: integration tests run more slowly than unit tests, but they remain significantly faster and more deterministic than full tests on devnet or testnet, since they operate entirely in-memory without network communication.
+
+The Solana ecosystem provides several frameworks designed to facilitate integration testing, each offering a different balance between control, abstraction, and developer convenience. The most notable among them are solana-program-test, Anchor’s testing framework, and client-based testing libraries such as Solana Web3.js or Solana Kit.
+
+### Popular Tools for Integration Testing in Rust
+
+#### Solana Program Test Framework
+
+The solana-program-test crate is the backbone of integration testing in Solana’s Rust ecosystem. It launches a lightweight, in-process version of the Solana runtime that behaves nearly identically to a local validator but runs fully in memory. Developers can register one or more programs, create test accounts, send instructions, and inspect the resulting on-chain state — all without deploying to an external cluster.
+
+This framework is good for testing interactions between multiple accounts and verifying instruction-level behavior. For example, a developer might simulate the full lifecycle of a voting process, from poll initialization to casting votes and closing results, while asserting that all state transitions occur correctly. The framework also supports testing multiple programs simultaneously, which is useful for projects involving CPIs or modular on-chain architectures. 
+
+#### Anchor Testing Environment
+
+For projects built with Anchor, integration testing becomes even more streamlined. Anchor internally uses `solana-program-test`, but enhances it with an expressive and ergonomic API. Instead of manually constructing transactions and serializing account data, developers can interact with their programs directly using method calls, with account validation and PDA derivation handled automatically based on the program’s IDL.
+
+This abstraction reduces boilerplate and makes integration tests easier to maintain, especially in large codebases. It also allows for deeper type-safety, since both the client and program share the same type definitions. Anchor’s test runner is particularly powerful for verifying complex interactions, such as reward distribution or account initialization flows involving multiple seeds. However, while it greatly improves developer productivity, it offers less flexibility for low-level debugging or for testing non-Anchor programs that do not follow its IDL conventions.
+
+Here is an example of the rust integration test via anchor client:
+```rust
+/// Integration test using Anchor Client:
+///  - Connects to a local Solana validator
+///  - Performs an airdrop for a fresh payer account
+///  - Calls the `initialize` instruction of the program
+///  - Fetches on-chain account data to verify correct state
+#[test]
+fn test_initialize_with_airdrop() {
+
+    // Create a new random keypair and connect to the local Solana validator
+    let payer = Rc::new(Keypair::new());
+    let client = anchor_client::Client::new(Cluster::Localnet, payer.clone());
+    
+    // Access the deployed Anchor program by its ID
+    let program = client.program(test_examples::id()).unwrap();
+    
+    // Get the RPC client from the program
+    let rpc = program.rpc();
+
+    // Airdrop 1 SOL to payer
+    let sig = rpc
+        .request_airdrop(&payer.pubkey(), 1_000_000_000)
+        .expect("Airdrop request failed");
+
+    // Wait until the airdrop transaction is fully confirmed on-chain
+    rpc.poll_for_signature(&sig).expect("Airdrop not finalized");
+
+    // Derive PDA
+    let (data_pda, _bump) =
+        Pubkey::find_program_address(&[b"data1", b"data2", payer.pubkey().as_ref()], &program.id());
+
+    // Build and send the `initialize` instruction
+    program
+        .request()
+        .accounts(test_examples::accounts::Initialize {
+            user: payer.pubkey(),
+            data: data_pda,
+            system_program: system_program::id(),
+        })
+        .args(test_examples::instruction::Initialize { count: 10 })
+        .send()
+        .unwrap();
+
+    // Fetch on-chain account
+    let acc: test_examples::MyData = program.account(data_pda).unwrap();
+
+    // Verify that the logic ran correctly
+    assert_eq!(acc.counter, 0);
+}
+```
+
+### Popular Tools for Integration Testing in Solana Client (TS/JS)
+
+#### Anchor’s TypeScript/JS testing tooling
+When you build a program using Anchor, the easiest way to test your program is the TypeScript package `@coral-xyz/anchor`. This library is used for Anchor-based programs because it knows about IDLs (Interface Description Languages) automatically generated by Anchor, Account Types, PDAs (Program Derived Addresses), and simplifies the interaction model tremendously.
+
+With `@coral-xyz/anchor` you typically start tests (often with Mocha + Chai or another test-framework) with import of your program’s IDL, instantiate a Program object, set up a Provider (which combines a Connection to a cluster—commonly localnet—and a Wallet).
+
+Here is an example of provider set up
+```ts
+  anchor.setProvider(anchor.AnchorProvider.env());
+  let connection = anchor.getProvider().connection;
+  const program = anchor.workspace.TestExamples as Program<TestExamples>;
+```
+
+The line of code `anchor.setProvider(anchor.AnchorProvider.env());` set up provider based on your cluster in the file `Anchor.toml`
+```bash
+    [provider]
+    cluster = "Localnet"
+```
+
+To create the call of instruction you will use this template `program.methods.<name-of-instruction>().accounts({...}).signers([...]).rpc()`. All of that ties back into the Anchor backend which handles serialization, account struct decoding, and so forth. Because the library is designed to map very directly onto your on-chain program, writing integration tests becomes efficient and less error-prone.
 
 Here is an example of an integration test:
 ```ts
@@ -80,16 +222,72 @@ try {
 });
 ```
 
-## On-chain Data Fetching
-After sending a transaction during testing, it’s essential to fetch and verify on-chain data to ensure expected changes were made.
+The benefits of this tool include increased productivity (less boilerplate), strong typing support (IDL + TS types), and automatic account deserialization which allows simple assertions:
 
-Use the `fetch` function to retrieve account data:
 ```ts
 // Fetch and verify the on-chain data.
 let dataAccount = await program.account.myData.fetch(data);
 assert.deepEqual(dataAccount.authority, user.publicKey);
 assert.strictEqual(dataAccount.counter, 0);
 ```
+
+Because it is aligned with the Anchor ecosystem, this is often the easiest path for teams who use Anchor for their on-chain Rust program plus TypeScript client.
+
+
+
+#### @solana/web3.js (Solana’s core JavaScript SDK)
+
+Another major tool for integration testing is the foundational library `@solana/web3.js`. This is the standard JavaScript/TypeScript SDK offered by Solana that exposes primitives such as Connection, TransactionInstruction, Transaction, Keypair, and so on. It is lower-level than Anchor’s abstractions and does not presume any IDL or account schema generation.
+
+When using `web3.js` for integration tests, you often manually build transactions, manually decode accounts (for example using borsh if your account are serialized that way), specify all the AccountMeta fields, and send transactions through a local validator (e.g., solana-test-validator). Because you are working at the primitive level, you have maximum control: you might simulate unusual edge cases, custom account metadata, or CPIs across several programs, and you’re not constrained by Anchor’s conventions.
+
+Here is an example of an integration test via `web3.js` :
+```ts
+  it("initializes via raw instruction", async () => {
+    // discriminator + borsh-encoded args (count: u8)
+    const dataBytes = Buffer.concat([ixDiscriminator("initialize"), Buffer.from([10])]);
+    const ix = new TransactionInstruction({
+      programId: program.programId,
+      keys: [
+        { pubkey: user.publicKey, isSigner: true, isWritable: true },
+        { pubkey: data, isSigner: false, isWritable: true },
+        { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
+      ],
+      data: dataBytes,
+    });
+
+    const tx = new Transaction().add(ix);
+    await provider.sendAndConfirm(tx, [user]);
+
+    const acc = await program.account.myData.fetch(data);
+    assert.deepEqual(acc.authority, user.publicKey);
+    assert.strictEqual(acc.counter, 0);
+  });
+```
+
+The benefit of `web3.js` in integration testing is flexibility and universality: whether your program is built with Anchor or not, if you know the instruction layout and account schema you can write tests. But the cost is extra boilerplate, slower iteration (you’ll write more code to set up accounts and transactions manually), and a greater possibility of mistakes in serialization or account setup.
+
+#### Other libraries: gill, @solana/kit, etc.
+
+Beyond Anchor and @solana/web3.js, a new generation of tools is reshaping Solana development — led by Gill and @solana/kit.
+Gill is a modern TypeScript/JavaScript SDK built on top of `@solana/kit` (the successor to web3.js). It focuses on developer experience, offering cleaner APIs, strong typing, and reduced boilerplate. Instead of manually managing instructions and accounts, developers can define programs and interactions declaratively, with automatic handling of serialization, PDA derivation, and transactions. Because Gill is built on the new Kit runtime, it benefits from a modular and promise-based architecture, making it ideal for modern dApp development and integration testing that simulates real client behavior.
+
+When it comes to Anchor programs, Gill can also be used successfully. It communicates with any Solana program at the RPC level, so Anchor’s on-chain programs are fully compatible. However, unlike the `@coral-xyz/anchor` client, Gill does not automatically process Anchor IDLs, derive PDAs, or provide account helpers. Developers need to manually define program interfaces and account structures. This trade-off offers greater flexibility and independence from the Anchor framework, but comes with slightly more setup effort.
+
+
+### How to Choose Between These Tools
+
+In selecting which framework to use for your integration tests, consider the following:
+
+- If you need to have rust integration tests and your on-chain program is built with Anchor you will probably use Anchor Testing Environment, otherwice Solana Program Test Framework.
+
+- If your on-chain program is built with Anchor and you value developer productivity and strong typing, start with `@coral-xyz/anchor`. It gives you the fastest path to writing tests aligned with your program’s IDL and account structure.
+
+- If you are working with a custom on-chain Rust program (not using Anchor), or you require custom instruction layout or CPIs across non-Anchor programs, you’ll likely opt for `@solana/web3.js`, accepting the extra boilerplate for the sake of flexibility.
+
+- If your testing scope covers client application flows (wallet interactions, UI simulation, batching, and front-end logic) and you prefer a library optimized for developer experience, you may explore gill (or Kit) — but be aware of less matured community examples for strict integration tests of on-chain programs.
+
+In practice, many teams adopt a layered approach: using Anchor’s test tooling for most integration tests, occasionally falling back to web3.js for the “weird corner cases”.
 
 
 ## Common Errors

@@ -18,3 +18,7 @@ idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
 anchor-lang = "0.31.1"
+
+[dev-dependencies]
+anchor-client = "0.31.1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
