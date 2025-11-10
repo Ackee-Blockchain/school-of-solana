@@ -29,8 +29,8 @@ This week, we are taking a look at a few common errors you’re likely to run in
 ## Types of Tests
 You should always aim for high test coverage. This includes testing both the "happy path" (successful cases) and "unhappy path" (error cases).
 
-> [!Info]
-> Examples of code and guide how to run each test you can find inside `test-examples` folder.
+> [!TIP]
+> Examples of code and guide how to run each test you can find inside [test-examples](./test-examples/) folder.
 
 ### Units Tests
 
