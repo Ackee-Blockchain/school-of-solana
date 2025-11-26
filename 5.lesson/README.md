@@ -282,8 +282,6 @@ When it comes to Anchor programs, `Gill` can also be used successfully. It commu
 | Custom instruction layout or CPI-heavy flows without Anchor | `@solana/web3.js` | Maximum flexibility at the cost of more boilerplate and manual serialization. |
 | Client-facing flows (wallet UX, UI logic, batching) | gill / Kit | Developer-friendly SDK focused on app-level interactions, though examples are still maturing. |
 
-Most teams mix and match: rely on `Anchor` tooling for day-to-day tests, then drop to `web3.js` or `Kit` when a scenario falls outside Anchor’s abstractions.
-
 
 ## Common Errors
 
