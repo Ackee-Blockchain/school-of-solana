@@ -1,49 +1,50 @@
-# 🧪 Test Examples (Anchor workspace)
+# Test Examples (Anchor Workspace)
 
-This workspace demonstrates 4 testing approaches for the same Anchor program (`test-examples`).  
-Each test interacts with the same `initialize(count: u8)` instruction, which writes the authority and computes a counter using `math_function`.
+This workspace demonstrates four testing approaches for the same Anchor program (`test-examples`). Each scenario targets the shared `initialize(count: u8)` instruction, which records the authority and computes a counter via `math_function`.
 
 ---
 
-## 📚 What’s Included
+## What’s Included
 
 | Type | Description | Location |
-|------|--------------|-----------|
-| **Unit (Rust’s Native Testing Framework)** | Rust-only test for pure logic (`math_function`) without Solana runtime. | `programs/test-examples/tests/unit.rs` |
-| **Integration (Rust + Anchor Testing Client)** | Rust + Anchor Client test. Connects to a running local validator and executes `initialize`. | `programs/test-examples/tests/integration.rs` |
-| **Integration (Anchor TS)** | TypeScript test using the Anchor TS client (`program.methods.initialize`) over RPC. | `tests/anchor-test.ts` |
-| **Integration (Raw web3.js)** | TypeScript test that manually builds and sends the raw instruction (discriminator + args). | `tests/web3-raw-test.ts` |
+|------|-------------|----------|
+| **Unit (Rust’s Native Testing Framework)** | Pure Rust test of `math_function`; no Solana runtime involved. | `programs/test-examples/tests/unit.rs` |
+| **Integration (Rust + Anchor Client)** | Rust test that uses Anchor Client against a running local validator. | `programs/test-examples/tests/integration.rs` |
+| **Integration (Anchor TS)** | TypeScript test built with the Anchor TS client (`program.methods.initialize`). | `tests/anchor-test.ts` |
+| **Integration (Raw web3.js)** | TypeScript test that assembles and sends the instruction manually (discriminator + args). | `tests/web3-raw-test.ts` |
 
 ---
 
 ## What Each Test Does
-- Unit (`programs/test-examples/tests/unit.rs`)
-  - Calls `math_function(count)` and checks results (e.g., if number <= 10 then return 10 - number; if number > 10 return None;).
-  - Goal: verify core logic quickly without Solana runtime.
-- Integration: Rust + Anchor Testing Client (`programs/test-examples/tests/integration.rs`)
-  - Uses `Anchor Client` with a running local validator to execute `initialize` via real RPC. Performs an airdrop to the test wallet, sends a signed transaction, and fetches on-chain data using `program.account()`.
-  - Goal: validate instruction handling, PDAs, and account transitions deterministically.
-- Integration: Anchor TS (`tests/anchor-test.ts`)
-  - Executes the `initialize(10)` instruction using the Anchor TypeScript client (`program.methods.initialize`) and verifies the on-chain `myData` account values through IDL deserialization.
-  - Goal: to replicate a real-world usage scenario of the program via the Anchor SDK and ensure that the flow (client → transaction → program → state) works correctly.
-- Integration: Raw web3.js (`tests/web3-raw-test.ts`)
-  - Manually constructs and sends a raw `TransactionInstruction` for initialize, including discriminator and Borsh-encoded arguments, without relying on Anchor client helpers.
-  - Goal: to validate low-level instruction encoding, account configuration, and transaction handling independently of the Anchor framework.
+- **Unit (`programs/test-examples/tests/unit.rs`)**
+  - Calls `math_function(count)` and checks the outcomes (≤ 10 → `Some(10 - count)`, > 10 → `None`).
+  - Goal: validate core math logic quickly without touching the Solana runtime.
+- **Integration – Rust + Anchor Client (`programs/test-examples/tests/integration.rs`)**
+  - Uses Anchor Client plus a running local validator to execute `initialize`, including wallet airdrop, signed transaction, and fetching on-chain data via `program.account()`.
+  - Goal: confirm instruction handling, PDA derivations, and account transitions deterministically.
+- **Integration – Anchor TS (`tests/anchor-test.ts`)**
+  - Executes `initialize(10)` using the Anchor TypeScript client and verifies the `myData` account through IDL-powered deserialization.
+  - Goal: mirror a real-world Anchor SDK workflow (client → transaction → program → state).
+- **Integration – Raw web3.js (`tests/web3-raw-test.ts`)**
+  - Manually constructs and sends a `TransactionInstruction` for `initialize`, encoding the discriminator and Borsh arguments without Anchor helpers.
+  - Goal: validate low-level instruction encoding, account metadata, and transaction handling independently of Anchor.
 
-## ⚙️ Prerequisites
+## Prerequisites
 
-Before running tests, make sure you have the following:
+Before running the tests, make sure you have:
 
-- **Solana CLI** and **local validator** installed:  
+- **Solana CLI** and a local validator installed:
   ```bash
   solana-test-validator -V
-- **Anchor CLI** installed and configured for localnet:
+  ```
+- **Anchor CLI** configured for localnet:
   ```bash
   anchor --version
-- Node.js 18+ and Yarn/NPM for TypeScript tests.
-- Install JS deps in this folder: `npm i` or `yarn`
+  ```
+- Node.js 18+ plus Yarn or npm for the TypeScript suites.
+- JavaScript dependencies installed in this folder (`npm i` or `yarn`).
 
-## ⚙️ Project Layout
+## Project Layout
 ```text
 programs/test-examples/
 ├── src/lib.rs                 # Anchor program source
@@ -54,26 +55,25 @@ tests/
 ├── anchor-test.ts             # Anchor client test (Mocha/Chai)
 └── web3-raw-test.ts           # Raw web3.js instruction test
 ```
-## 🚀 Running Tests
 
-- Rust unit + integration (integration test requires active validator, read next section for more info): `cd programs/test-examples && cargo test`
-- Client based tests: `anchor test`
+## Running Tests
 
-## ⚠️ Important Notes for Rust Integration Tests
-When you use `anchor test` you do not need to start validator by yourself, because anchor do it automatically:
-  - Automatically starts a local validator (solana-test-validator) before running the tests.
+- Rust unit + integration (integration test requires an active validator — see the next section): `cd programs/test-examples && cargo test`
+- Client-based tests: `anchor test`
+
+## Important Notes for Rust Integration Tests
+When you run `anchor test`, you do **not** need to start a validator manually because Anchor handles it for you:
+  - Starts a local validator (`solana-test-validator`) before executing tests.
   - Deploys your program(s) to that validator.
-  - Executes all TypeScript/JavaScript tests in the /tests directory using testing framework (e.g. Mocha).
-  - Shuts down the validator automatically when the test suite completes.
+  - Runs every TypeScript/JavaScript test in the `tests/` directory (e.g., via Mocha).
+  - Shuts the validator down after the suite finishes.
 
   > [!WARNING]
-  > If you manually start a validator beforehand and then run `anchor test`. You may encounter an error such as “port already in use”, since Anchor will attempt to launch its own validator instance on the same port.
+  > If you start your own validator and then run `anchor test`, you may see “port already in use,” since Anchor tries to launch its own validator on the same port.
 
+Rust integration tests behave differently: `cargo test` does **not** start a validator. You must have one running beforehand.
 
-But when you run Rust integration tests, then the local validator must be running before testing.
-Unlike anchor test, cargo test does not start a validator automatically. 
-
-Start it manually in a separate terminal (you must be in the `programs/test-examples` folder):
+Start it manually in a separate terminal (from `programs/test-examples`):
   ```bash
   anchor localnet
   ```
@@ -81,4 +81,4 @@ or
   ```bash
   solana-test-validator --reset
   ```
-after local validator will be started, you can run Rust integration test.
+Once the validator is up, run the Rust integration tests. 
